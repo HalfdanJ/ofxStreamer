@@ -12,10 +12,13 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <unistd.h>
+
+extern "C" {
+
 #include <x264.h>
 #include <libavformat/avformat.h>
 #include <libswscale/swscale.h>
-
+}
 #define WIDTH       640
 #define HEIGHT      480
 #define FPS         30
