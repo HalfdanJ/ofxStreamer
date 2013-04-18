@@ -71,7 +71,6 @@ ofxX264Encoder::ofxX264Encoder(){
         x264_picture_t* pic = (x264_picture_t*) malloc(sizeof(x264_picture_t));
         create_sample_picture(pic);
         
-        
         vector<char*> m_vNALs;
         vector<int> m_vSizes;
         
@@ -89,6 +88,9 @@ ofxX264Encoder::ofxX264Encoder(){
             fwrite( m_vNALs[ nIndex ], m_vSizes[ nIndex ], 1, pFile );
         }
     }
+    
+    
+    
 
 }
 
