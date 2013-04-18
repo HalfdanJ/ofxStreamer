@@ -16,7 +16,7 @@
 		DD76B7591720057400965044 /* libswresample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B7511720057400965044 /* libswresample.a */; };
 		DD76B75A1720057400965044 /* libswscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B7521720057400965044 /* libswscale.a */; };
 		DD76B75B1720057400965044 /* libx264.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B7531720057400965044 /* libx264.a */; };
-		DDF2ABAE171EDE42000B5379 /* ofxX264.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDF2ABAC171EDE42000B5379 /* ofxX264.cpp */; };
+		DDF2ABAE171EDE42000B5379 /* ofxX264Encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDF2ABAC171EDE42000B5379 /* ofxX264Encoder.cpp */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
 		E45BE97C0E8CC7DD009D7055 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9720E8CC7DD009D7055 /* ApplicationServices.framework */; };
@@ -78,8 +78,8 @@
 		DD76B7511720057400965044 /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswresample.a; path = ../libs/osx/libswresample.a; sourceTree = "<group>"; };
 		DD76B7521720057400965044 /* libswscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswscale.a; path = ../libs/osx/libswscale.a; sourceTree = "<group>"; };
 		DD76B7531720057400965044 /* libx264.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libx264.a; path = ../libs/osx/libx264.a; sourceTree = "<group>"; };
-		DDF2ABAC171EDE42000B5379 /* ofxX264.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxX264.cpp; sourceTree = "<group>"; };
-		DDF2ABAD171EDE42000B5379 /* ofxX264.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxX264.h; sourceTree = "<group>"; };
+		DDF2ABAC171EDE42000B5379 /* ofxX264Encoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxX264Encoder.cpp; sourceTree = "<group>"; };
+		DDF2ABAD171EDE42000B5379 /* ofxX264Encoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxX264Encoder.h; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
 		E45BE9720E8CC7DD009D7055 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
@@ -206,8 +206,8 @@
 		DDF2ABAB171EDE37000B5379 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				DDF2ABAC171EDE42000B5379 /* ofxX264.cpp */,
-				DDF2ABAD171EDE42000B5379 /* ofxX264.h */,
+				DDF2ABAC171EDE42000B5379 /* ofxX264Encoder.cpp */,
+				DDF2ABAD171EDE42000B5379 /* ofxX264Encoder.h */,
 			);
 			name = src;
 			path = ../src;
@@ -348,7 +348,7 @@
 			files = (
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* testApp.cpp in Sources */,
-				DDF2ABAE171EDE42000B5379 /* ofxX264.cpp in Sources */,
+				DDF2ABAE171EDE42000B5379 /* ofxX264Encoder.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

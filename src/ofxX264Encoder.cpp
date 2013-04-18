@@ -6,15 +6,12 @@
 //
 //
 
-#include "ofxX264.h"
+#include "ofxX264Encoder.h"
 
 
 uint8_t test = 0x80;
 
 
-struct AVFormatContext* avctx;
-struct x264_t* encoder;
-struct SwsContext* imgctx;
 
 
 void create_sample_picture(x264_picture_t* picture)
@@ -27,16 +24,20 @@ void create_sample_picture(x264_picture_t* picture)
     int strides = WIDTH / 8;
     uint8_t* data = (uint8_t*) malloc(WIDTH * HEIGHT * 3);
     memset(data, test, WIDTH * HEIGHT * 3);
-    test = (test << 1) | (test >> (8 - 1));
+   // test = (test << 1) | (test >> (8 - 1));
     
     // scale the image
-    sws_scale(imgctx, (const uint8_t* const*) &data, &strides, 0, HEIGHT,
-              picture->img.plane, picture->img.i_stride);
 }
 
+/*
+bool ofxX264Encoder::encodeData(const char *data, int data_length){
+    sws_scale(imgctx, (const uint8_t* const*) &data, &strides, 0, HEIGHT,
+              picture->img.plane, picture->img.i_stride);
+
+}*/
 
 
-ofxX264::ofxX264(){
+ofxX264Encoder::ofxX264Encoder(){
     
     imgctx = sws_getContext(WIDTH, HEIGHT, PIX_FMT_MONOWHITE,
                             WIDTH, HEIGHT, PIX_FMT_YUV420P,
@@ -62,8 +63,6 @@ ofxX264::ofxX264(){
     x264_param_apply_profile(&param, "baseline");
     
     
-    x264_picture_t* pic = (x264_picture_t*) malloc(sizeof(x264_picture_t));
-    create_sample_picture(pic);
     
     
     x264_nal_t* nals;
@@ -73,16 +72,31 @@ ofxX264::ofxX264(){
     
     x264_param_apply_profile(&param, "high");
     encoder = x264_encoder_open(&param);
+    
+    FILE* pFile;
+    pFile = fopen("/Users/jonas/Desktop/file.h264", "w");
 
-
-    int frame_size = x264_encoder_encode(encoder, &nals, &num_nals, pic, &pic_out);
-    if (frame_size > 0)
-    {
-//        m_vNALs.push_back( (char*)nals[0].p_payload );
-  //      m_vSizes.push_back( frame_size );
+    for(int i=0;i<10;i++){
+        x264_picture_t* pic = (x264_picture_t*) malloc(sizeof(x264_picture_t));
+        create_sample_picture(pic);
         
-        printf("frame size %i", frame_size);
+        
+        vector<char*> m_vNALs;
+        vector<int> m_vSizes;
+        
+        int frame_size = x264_encoder_encode(encoder, &nals, &num_nals, pic, &pic_out);
+        if (frame_size > 0)
+        {
+            printf("%i\n", frame_size);
+            
+            m_vNALs.push_back( (char*)nals[0].p_payload );
+            m_vSizes.push_back( frame_size );
+        }
+        
+        for( int nIndex = 0; nIndex < m_vNALs.size(); nIndex++ )
+        {
+            fwrite( m_vNALs[ nIndex ], m_vSizes[ nIndex ], 1, pFile );
+        }
     }
-
 
 }
