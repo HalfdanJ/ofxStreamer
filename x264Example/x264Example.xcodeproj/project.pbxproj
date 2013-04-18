@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		044C9DD21720241B000F3A9C /* ofxX264Decoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 044C9DD11720241B000F3A9C /* ofxX264Decoder.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		DD76B7541720057400965044 /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B74C1720057400965044 /* libavcodec.a */; };
 		DD76B7551720057400965044 /* libavdevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B74D1720057400965044 /* libavdevice.a */; };
@@ -69,6 +70,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		044C9DD017202400000F3A9C /* ofxX264Decoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxX264Decoder.h; sourceTree = "<group>"; };
+		044C9DD11720241B000F3A9C /* ofxX264Decoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxX264Decoder.cpp; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		DD76B74C1720057400965044 /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = ../libs/osx/libavcodec.a; sourceTree = "<group>"; };
 		DD76B74D1720057400965044 /* libavdevice.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavdevice.a; path = ../libs/osx/libavdevice.a; sourceTree = "<group>"; };
@@ -208,6 +211,8 @@
 			children = (
 				DDF2ABAC171EDE42000B5379 /* ofxX264Encoder.cpp */,
 				DDF2ABAD171EDE42000B5379 /* ofxX264Encoder.h */,
+				044C9DD017202400000F3A9C /* ofxX264Decoder.h */,
+				044C9DD11720241B000F3A9C /* ofxX264Decoder.cpp */,
 			);
 			name = src;
 			path = ../src;
@@ -349,6 +354,7 @@
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* testApp.cpp in Sources */,
 				DDF2ABAE171EDE42000B5379 /* ofxX264Encoder.cpp in Sources */,
+				044C9DD21720241B000F3A9C /* ofxX264Decoder.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

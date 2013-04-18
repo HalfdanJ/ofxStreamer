@@ -8,10 +8,7 @@
 
 #include "ofxX264Encoder.h"
 
-
 uint8_t test = 0x80;
-
-
 
 
 void create_sample_picture(x264_picture_t* picture)
@@ -25,17 +22,14 @@ void create_sample_picture(x264_picture_t* picture)
     uint8_t* data = (uint8_t*) malloc(WIDTH * HEIGHT * 3);
     memset(data, test, WIDTH * HEIGHT * 3);
    // test = (test << 1) | (test >> (8 - 1));
-    
-    // scale the image
+   // scale the image
 }
 
 /*
 bool ofxX264Encoder::encodeData(const char *data, int data_length){
     sws_scale(imgctx, (const uint8_t* const*) &data, &strides, 0, HEIGHT,
               picture->img.plane, picture->img.i_stride);
-
 }*/
-
 
 ofxX264Encoder::ofxX264Encoder(){
     
@@ -62,9 +56,6 @@ ofxX264Encoder::ofxX264Encoder(){
     param.b_annexb = 1;
     x264_param_apply_profile(&param, "baseline");
     
-    
-    
-    
     x264_nal_t* nals;
     int num_nals;
     x264_picture_t pic_out;
@@ -74,7 +65,7 @@ ofxX264Encoder::ofxX264Encoder(){
     encoder = x264_encoder_open(&param);
     
     FILE* pFile;
-    pFile = fopen("/Users/jonas/Desktop/file.h264", "w");
+    pFile = fopen("/Users/johan/Desktop/file.h264", "w");
 
     for(int i=0;i<10;i++){
         x264_picture_t* pic = (x264_picture_t*) malloc(sizeof(x264_picture_t));
@@ -100,3 +91,5 @@ ofxX264Encoder::ofxX264Encoder(){
     }
 
 }
+
+
