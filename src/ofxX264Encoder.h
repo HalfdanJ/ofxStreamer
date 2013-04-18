@@ -20,8 +20,6 @@ extern "C" {
 #include <libswscale/swscale.h>
 }
 
-#define WIDTH       640
-#define HEIGHT      480
 #define FPS         30
 #define BITRATE     400000
 #define RTP_ADDRESS "127.0.0.1"
@@ -35,11 +33,28 @@ class ofxX264Encoder {
 public:
     ofxX264Encoder();
     
-    bool encodeData(const char * data, int data_length);
+    void setup(int width, int height);
+    
+    bool encodeData(unsigned char *data, int data_length, int stride, int height );
+    
+    int width;
+    int height;
+    
+    
+    x264_picture_t * getPicture();
+    
+    
+    unsigned char * encodedFrameData;
+    int encodedFrameSize;
+    
+private:
+    struct AVFormatContext* avctx;
+    struct x264_t* encoder;
+    struct SwsContext* imgctx;
 
-struct AVFormatContext* avctx;
-struct x264_t* encoder;
-struct SwsContext* imgctx;
+    x264_picture_t picture_in;
+    x264_picture_t * picture_out;
+
 
 };
 

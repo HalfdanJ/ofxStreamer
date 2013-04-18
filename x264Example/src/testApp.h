@@ -22,4 +22,6 @@ class testApp : public ofBaseApp{
     
     ofxX264Encoder x264Encoder;
     ofxX264Decoder x264Decoder;
+    
+    ofImage inputImage;
 };
