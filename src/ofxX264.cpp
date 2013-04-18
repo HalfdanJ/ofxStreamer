@@ -12,6 +12,11 @@
 uint8_t test = 0x80;
 
 
+struct AVFormatContext* avctx;
+struct x264_t* encoder;
+struct SwsContext* imgctx;
+
+
 void create_sample_picture(x264_picture_t* picture)
 {
     // create a frame to store in
@@ -32,8 +37,8 @@ void create_sample_picture(x264_picture_t* picture)
 
 
 ofxX264::ofxX264(){
-    x264_encoder_intra_refresh(nil);
- /*   x264_param_t param;
+    
+    x264_param_t param;
     x264_param_default_preset(&param, "veryfast", "zerolatency");
     param.i_threads = 1;
     param.i_width = WIDTH;
@@ -51,5 +56,24 @@ ofxX264::ofxX264(){
     param.b_repeat_headers = 1;
     param.b_annexb = 1;
     x264_param_apply_profile(&param, "baseline");
-*/
+    
+    
+    x264_picture_t* pic = (x264_picture_t*) malloc(sizeof(x264_picture_t));
+    create_sample_picture(pic);
+    
+    
+    x264_nal_t* nals;
+    int num_nals;
+    x264_picture_t pic_out;
+
+    int frame_size = x264_encoder_encode(encoder, &nals, &num_nals, pic, &pic_out);
+    if (frame_size > 0)
+    {
+//        m_vNALs.push_back( (char*)nals[0].p_payload );
+  //      m_vSizes.push_back( frame_size );
+        
+        printf("frame size %i", frame_size);
+    }
+
+
 }

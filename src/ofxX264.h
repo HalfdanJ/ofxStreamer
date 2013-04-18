@@ -26,9 +26,6 @@ extern "C" {
 #define RTP_ADDRESS "127.0.0.1"
 #define RTP_PORT    49990
 
-struct AVFormatContext* avctx;
-struct x264_t* encoder;
-struct SwsContext* imgctx;
 
 
 class ofxX264 {
