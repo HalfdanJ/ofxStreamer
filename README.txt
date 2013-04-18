@@ -14,3 +14,9 @@ Update search paths ... ?
 
 
 
+## Notes
+
+maybe link x264 this way:
+Library Search Paths:  /usr/local/lib
+Other Linker Flags: -x264 
+
