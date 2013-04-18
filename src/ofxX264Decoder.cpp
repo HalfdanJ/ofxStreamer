@@ -12,8 +12,8 @@ ofxX264Decoder::ofxX264Decoder(){
     
     
     // get test data
-    FILE* pFile;
-    pFile = fopen("/Users/johan/Desktop/file.h264", "w");
+    //FILE* pFile;
+    //pFile = fopen("/Users/johan/Desktop/file.h264", "w");
     
     video_decode_example("/Users/johan/Desktop/file.h264", "test.mpg");
     // initialize decoder
@@ -21,8 +21,6 @@ ofxX264Decoder::ofxX264Decoder(){
     // decode
     
     // draw
-    
-
     
 }
 

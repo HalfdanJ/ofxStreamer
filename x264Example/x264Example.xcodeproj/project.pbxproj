@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		044C9DD21720241B000F3A9C /* ofxX264Decoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 044C9DD11720241B000F3A9C /* ofxX264Decoder.cpp */; };
+		044C9DD617203A72000F3A9C /* libiconv.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 044C9DD517203A72000F3A9C /* libiconv.2.dylib */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		DD76B7541720057400965044 /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B74C1720057400965044 /* libavcodec.a */; };
 		DD76B7551720057400965044 /* libavdevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B74D1720057400965044 /* libavdevice.a */; };
@@ -72,6 +73,7 @@
 /* Begin PBXFileReference section */
 		044C9DD017202400000F3A9C /* ofxX264Decoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxX264Decoder.h; sourceTree = "<group>"; };
 		044C9DD11720241B000F3A9C /* ofxX264Decoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxX264Decoder.cpp; sourceTree = "<group>"; };
+		044C9DD517203A72000F3A9C /* libiconv.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libiconv.2.dylib; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		DD76B74C1720057400965044 /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = ../libs/osx/libavcodec.a; sourceTree = "<group>"; };
 		DD76B74D1720057400965044 /* libavdevice.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavdevice.a; path = ../libs/osx/libavdevice.a; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 				DD76B7591720057400965044 /* libswresample.a in Frameworks */,
 				DD76B75A1720057400965044 /* libswscale.a in Frameworks */,
 				DD76B75B1720057400965044 /* libx264.a in Frameworks */,
+				044C9DD617203A72000F3A9C /* libiconv.2.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -194,6 +197,7 @@
 		DDF2ABA3171EDE18000B5379 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				044C9DD517203A72000F3A9C /* libiconv.2.dylib */,
 				DD76B74C1720057400965044 /* libavcodec.a */,
 				DD76B74D1720057400965044 /* libavdevice.a */,
 				DD76B74E1720057400965044 /* libavfilter.a */,
@@ -524,10 +528,16 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_52)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../libs/osx\"";
-				OTHER_LDFLAGS = "$(OF_CORE_LIBS)";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)\"";
+				OTHER_LDFLAGS = (
+					"$(OF_CORE_LIBS)",
+					"$(OTHER_LDFLAGS_QUOTED_FOR_TARGET_1)",
+				);
+				OTHER_LDFLAGS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/libiconv.2.dylib\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = x264ExampleDebug;
 				WRAPPER_EXTENSION = app;
@@ -621,10 +631,16 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_51)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../libs/osx\"";
-				OTHER_LDFLAGS = "$(OF_CORE_LIBS)";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)\"";
+				OTHER_LDFLAGS = (
+					"$(OF_CORE_LIBS)",
+					"$(OTHER_LDFLAGS_QUOTED_FOR_TARGET_1)",
+				);
+				OTHER_LDFLAGS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/libiconv.2.dylib\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = x264Example;
 				WRAPPER_EXTENSION = app;
