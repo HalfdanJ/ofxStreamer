@@ -21,4 +21,6 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
     
     ofxX264Encoder x264Encoder;
+    
+    ofImage inputImage;
 };
