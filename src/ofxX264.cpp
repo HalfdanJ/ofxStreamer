@@ -38,6 +38,10 @@ void create_sample_picture(x264_picture_t* picture)
 
 ofxX264::ofxX264(){
     
+    imgctx = sws_getContext(WIDTH, HEIGHT, PIX_FMT_MONOWHITE,
+                            WIDTH, HEIGHT, PIX_FMT_YUV420P,
+                            SWS_FAST_BILINEAR, NULL, NULL, NULL);
+    
     x264_param_t param;
     x264_param_default_preset(&param, "veryfast", "zerolatency");
     param.i_threads = 1;
@@ -65,6 +69,11 @@ ofxX264::ofxX264(){
     x264_nal_t* nals;
     int num_nals;
     x264_picture_t pic_out;
+    
+    
+    x264_param_apply_profile(&param, "high");
+    encoder = x264_encoder_open(&param);
+
 
     int frame_size = x264_encoder_encode(encoder, &nals, &num_nals, pic, &pic_out);
     if (frame_size > 0)

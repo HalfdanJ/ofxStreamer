@@ -8,9 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
-		DD76B741172003C600965044 /* libx264.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B740172003C600965044 /* libx264.a */; };
-		DD76B7471720046E00965044 /* libswscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B7461720046E00965044 /* libswscale.a */; };
-		DD76B7491720047A00965044 /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B7481720047A00965044 /* libavutil.a */; };
+		DD76B7541720057400965044 /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B74C1720057400965044 /* libavcodec.a */; };
+		DD76B7551720057400965044 /* libavdevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B74D1720057400965044 /* libavdevice.a */; };
+		DD76B7561720057400965044 /* libavfilter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B74E1720057400965044 /* libavfilter.a */; };
+		DD76B7571720057400965044 /* libavformat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B74F1720057400965044 /* libavformat.a */; };
+		DD76B7581720057400965044 /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B7501720057400965044 /* libavutil.a */; };
+		DD76B7591720057400965044 /* libswresample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B7511720057400965044 /* libswresample.a */; };
+		DD76B75A1720057400965044 /* libswscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B7521720057400965044 /* libswscale.a */; };
+		DD76B75B1720057400965044 /* libx264.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B7531720057400965044 /* libx264.a */; };
 		DDF2ABAE171EDE42000B5379 /* ofxX264.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDF2ABAC171EDE42000B5379 /* ofxX264.cpp */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
@@ -65,9 +70,14 @@
 
 /* Begin PBXFileReference section */
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
-		DD76B740172003C600965044 /* libx264.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libx264.a; path = ../libs/osx/libx264.a; sourceTree = "<group>"; };
-		DD76B7461720046E00965044 /* libswscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswscale.a; path = ../libs/osx/libswscale.a; sourceTree = "<group>"; };
-		DD76B7481720047A00965044 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = ../libs/osx/libavutil.a; sourceTree = "<group>"; };
+		DD76B74C1720057400965044 /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = ../libs/osx/libavcodec.a; sourceTree = "<group>"; };
+		DD76B74D1720057400965044 /* libavdevice.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavdevice.a; path = ../libs/osx/libavdevice.a; sourceTree = "<group>"; };
+		DD76B74E1720057400965044 /* libavfilter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavfilter.a; path = ../libs/osx/libavfilter.a; sourceTree = "<group>"; };
+		DD76B74F1720057400965044 /* libavformat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavformat.a; path = ../libs/osx/libavformat.a; sourceTree = "<group>"; };
+		DD76B7501720057400965044 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = ../libs/osx/libavutil.a; sourceTree = "<group>"; };
+		DD76B7511720057400965044 /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswresample.a; path = ../libs/osx/libswresample.a; sourceTree = "<group>"; };
+		DD76B7521720057400965044 /* libswscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswscale.a; path = ../libs/osx/libswscale.a; sourceTree = "<group>"; };
+		DD76B7531720057400965044 /* libx264.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libx264.a; path = ../libs/osx/libx264.a; sourceTree = "<group>"; };
 		DDF2ABAC171EDE42000B5379 /* ofxX264.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxX264.cpp; sourceTree = "<group>"; };
 		DDF2ABAD171EDE42000B5379 /* ofxX264.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxX264.h; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
@@ -117,9 +127,14 @@
 				E4C2424810CC5A17004149E2 /* Cocoa.framework in Frameworks */,
 				E4C2424910CC5A17004149E2 /* IOKit.framework in Frameworks */,
 				E7E077E515D3B63C0020DFD4 /* CoreVideo.framework in Frameworks */,
-				DD76B741172003C600965044 /* libx264.a in Frameworks */,
-				DD76B7471720046E00965044 /* libswscale.a in Frameworks */,
-				DD76B7491720047A00965044 /* libavutil.a in Frameworks */,
+				DD76B7541720057400965044 /* libavcodec.a in Frameworks */,
+				DD76B7551720057400965044 /* libavdevice.a in Frameworks */,
+				DD76B7561720057400965044 /* libavfilter.a in Frameworks */,
+				DD76B7571720057400965044 /* libavformat.a in Frameworks */,
+				DD76B7581720057400965044 /* libavutil.a in Frameworks */,
+				DD76B7591720057400965044 /* libswresample.a in Frameworks */,
+				DD76B75A1720057400965044 /* libswscale.a in Frameworks */,
+				DD76B75B1720057400965044 /* libx264.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,9 +191,14 @@
 		DDF2ABA3171EDE18000B5379 /* libs */ = {
 			isa = PBXGroup;
 			children = (
-				DD76B7481720047A00965044 /* libavutil.a */,
-				DD76B7461720046E00965044 /* libswscale.a */,
-				DD76B740172003C600965044 /* libx264.a */,
+				DD76B74C1720057400965044 /* libavcodec.a */,
+				DD76B74D1720057400965044 /* libavdevice.a */,
+				DD76B74E1720057400965044 /* libavfilter.a */,
+				DD76B74F1720057400965044 /* libavformat.a */,
+				DD76B7501720057400965044 /* libavutil.a */,
+				DD76B7511720057400965044 /* libswresample.a */,
+				DD76B7521720057400965044 /* libswscale.a */,
+				DD76B7531720057400965044 /* libx264.a */,
 			);
 			name = libs;
 			sourceTree = "<group>";
@@ -428,7 +448,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(OF_CORE_HEADERS)",
 					src,
-					/usr/local/include,
 					"$(HEADER_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
 				HEADER_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../libs/include\"";
@@ -526,7 +545,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(OF_CORE_HEADERS)",
 					src,
-					/usr/local/include,
 					"$(HEADER_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
 				HEADER_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../libs/include\"";
