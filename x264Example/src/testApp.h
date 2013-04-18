@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxX264.h"
+#include "ofxX264Encoder.h"
 
 
 class testApp : public ofBaseApp{
@@ -20,5 +20,5 @@ class testApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
     
-    ofxX264 x264;
+    ofxX264Encoder x264Encoder;
 };
