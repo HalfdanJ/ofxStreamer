@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		044097571721420900F224F6 /* libbz2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 044097561721420900F224F6 /* libbz2.a */; };
 		044C9DD21720241B000F3A9C /* ofxX264Decoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 044C9DD11720241B000F3A9C /* ofxX264Decoder.cpp */; };
 		044C9DD617203A72000F3A9C /* libiconv.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 044C9DD517203A72000F3A9C /* libiconv.2.dylib */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
@@ -71,6 +72,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		044097561721420900F224F6 /* libbz2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libbz2.a; sourceTree = "<group>"; };
 		044C9DD017202400000F3A9C /* ofxX264Decoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxX264Decoder.h; sourceTree = "<group>"; };
 		044C9DD11720241B000F3A9C /* ofxX264Decoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxX264Decoder.cpp; sourceTree = "<group>"; };
 		044C9DD517203A72000F3A9C /* libiconv.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libiconv.2.dylib; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 				DD76B75A1720057400965044 /* libswscale.a in Frameworks */,
 				DD76B75B1720057400965044 /* libx264.a in Frameworks */,
 				044C9DD617203A72000F3A9C /* libiconv.2.dylib in Frameworks */,
+				044097571721420900F224F6 /* libbz2.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,6 +200,7 @@
 		DDF2ABA3171EDE18000B5379 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				044097561721420900F224F6 /* libbz2.a */,
 				044C9DD517203A72000F3A9C /* libiconv.2.dylib */,
 				DD76B74C1720057400965044 /* libavcodec.a */,
 				DD76B74D1720057400965044 /* libavdevice.a */,
@@ -530,11 +534,13 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../libs/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5 = "\"$(SRCROOT)\"";
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_LIBS)",
 					"$(OTHER_LDFLAGS_QUOTED_FOR_TARGET_1)",
@@ -635,11 +641,13 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../libs/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5 = "\"$(SRCROOT)\"";
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_LIBS)",
 					"$(OTHER_LDFLAGS_QUOTED_FOR_TARGET_1)",
