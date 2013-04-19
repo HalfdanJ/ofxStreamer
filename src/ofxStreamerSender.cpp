@@ -18,9 +18,12 @@ ofxStreamerSender::ofxStreamerSender(){
 
 
 
-void ofxStreamerSender::setup(int _width, int _height, string destination_ip, int destination_port ,const char * preset){
+void ofxStreamerSender::setup(int _width, int _height, string destination_ip, int destination_port ,string _preset){
     width = _width,
     height = _height;
+    preset = _preset;
+    
+    frameNum = 0;
     
     av_register_all();
     avformat_network_init();
@@ -39,9 +42,11 @@ void ofxStreamerSender::setup(int _width, int _height, string destination_ip, in
 
     
     
+    int bitrate = 4000;
+    
     //Initialize the h264 encoder
     x264_param_t param;
-    x264_param_default_preset(&param, preset, "zerolatency");
+    x264_param_default_preset(&param, preset.c_str(), "zerolatency");
     param.i_threads = 5;
     param.i_width = width;
     param.i_height = height;
@@ -52,11 +57,20 @@ void ofxStreamerSender::setup(int _width, int _height, string destination_ip, in
     param.b_intra_refresh = 1;
     //Rate control:
     param.rc.i_rc_method = X264_RC_CRF;
-    param.rc.f_rf_constant = 25;
-    param.rc.f_rf_constant_max = 35;
+//    param.rc.f_rf_constant = 25;
+//    param.rc.f_rf_constant_max = 35;
+    param.rc.i_lookahead = 0;
+    param.rc.i_bitrate = bitrate;
+    param.rc.i_vbv_max_bitrate = bitrate;
+    param.rc.i_vbv_buffer_size = bitrate/30;
+    
     //For streaming:
     param.b_repeat_headers = 1;
     param.b_annexb = 1;
+    
+    
+
+    
     x264_param_apply_profile(&param, "baseline");
     
     encoder = x264_encoder_open(&param);
@@ -84,11 +98,11 @@ void ofxStreamerSender::setup(int _width, int _height, string destination_ip, in
     
     
     // try to open the UDP stream
-    char filename[100];
-    snprintf(filename, sizeof(filename), "udp://%s:%d", destination_ip.c_str(), destination_port);
-    if (avio_open(&avctx->pb, filename, AVIO_FLAG_WRITE) < 0)
+    url = "udp://"+destination_ip+":"+ofToString(destination_port);
+//    snprintf(filename, sizeof(filename), "udp://%s:%d", destination_ip.c_str(), destination_port);
+    if (avio_open(&avctx->pb, url.c_str(), AVIO_FLAG_WRITE) < 0)
     {
-        ofLog(OF_LOG_FATAL_ERROR, "Couldn't open UDP output stream %s",filename);
+        ofLog(OF_LOG_FATAL_ERROR, "Couldn't open UDP output stream %s",url.c_str());
         exit(0);
     }
     
@@ -179,6 +193,16 @@ bool ofxStreamerSender::sendFrame(){
      p.flags |= AV_PKT_FLAG_KEY;
      */
     
+    frameNum++;
+    
+    float timeDiff = ofGetElapsedTimeMillis() - lastSendTime;
+    
+    frameRate += ((1.0/(timeDiff/1000.0)) - frameRate)*0.8;
+    
+    bitrate = 8 * encodedFrameSize * frameRate / 1000.0;
+    
+    
+    lastSendTime = ofGetElapsedTimeMillis();
     
     // send it out
     return av_write_frame(avctx, &p);
