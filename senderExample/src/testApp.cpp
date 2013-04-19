@@ -4,8 +4,8 @@
 void testApp::setup(){
     ofLogLevel(OF_LOG_WARNING);
     
-    //    sender.setup(640, 480, "jive.local", 1234);
-    sender.setup(640, 480);
+    sender.setup(640, 480, "jive.local", 1234);
+    //sender.setup(640, 480);
     
     data = (unsigned char*) malloc(sizeof(char)* 640 * 480 * 3*10);
     
