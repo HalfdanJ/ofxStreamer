@@ -8,6 +8,8 @@
 
 #include "ofxX264Decoder.h"
 
+using namespace std;
+
 ofxX264Decoder::ofxX264Decoder(){
     
     
@@ -24,6 +26,8 @@ ofxX264Decoder::ofxX264Decoder(){
     
     // draw
     
+    cout<<"start"<<endl;
+    
     SwsContext *img_convert_ctx;
     AVFormatContext* context = avformat_alloc_context();
     AVCodecContext* ccontext = avcodec_alloc_context3(NULL);
@@ -34,7 +38,12 @@ ofxX264Decoder::ofxX264Decoder(){
     //av_log_set_callback(&log_callback);
     
     //open rtsp
-    if(avformat_open_input(&context, "rtsp://134.169.178.187:8554/h264.3gp",NULL,NULL) != 0){
+    cout<<"try to open rtsp stream"<<endl;
+    
+    static string streamAddress = "http://59.124.145.72:17282";
+    //"rtsp://134.169.178.187:8554/h264.3gp"
+    
+    if(avformat_open_input(&context, streamAddress.c_str(),NULL,NULL) != 0){
         return EXIT_FAILURE;
     }
     
@@ -131,6 +140,8 @@ ofxX264Decoder::ofxX264Decoder(){
     avio_close(oc->pb);
     avformat_free_context(oc);
     
+    
+    cout<<"exit"<<endl;
     return (EXIT_SUCCESS);
     
     
