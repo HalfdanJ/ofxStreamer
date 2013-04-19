@@ -3,6 +3,8 @@
 //--------------------------------------------------------------
 void testApp::setup(){
     ofSetWindowTitle("Receiver");
+    ofSetWindowPosition(0, 540);
+
     ofLogLevel(OF_LOG_WARNING);
     receiver.setup(1234);
     
@@ -18,7 +20,7 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-    ofBackground(0,0,0);
+    ofBackgroundGradient(ofColor(28,78,28), ofColor(14,25,14),OF_GRADIENT_LINEAR);
     
     if(receiver.isFrameNew()) {
         receiver.draw(0, 0);

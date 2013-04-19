@@ -9,7 +9,7 @@
 #pragma once
 
 #define 	FF_INPUT_BUFFER_PADDING_SIZE   16
-#define     INBUF_SIZE 4096
+#define     INBUF_SIZE 1024
 
 #include "ofMain.h"
 

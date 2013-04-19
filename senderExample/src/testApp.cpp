@@ -3,6 +3,9 @@
 //--------------------------------------------------------------
 void testApp::setup(){
     ofSetWindowTitle("Sender");
+    ofSetWindowPosition(0, 0);
+    ofSetFrameRate(70);
+
     ofLogLevel(OF_LOG_WARNING);
     
     //sender.setup(640, 480, "jive.local", 1234);
@@ -15,9 +18,9 @@ void testApp::setup(){
     
     oscReceiver.setup(9999);
     
-    ofSetFrameRate(30);
     
     latency = 0;
+    
 }
 
 //--------------------------------------------------------------
@@ -38,7 +41,8 @@ void testApp::update(){
         sender.encodeFrame(bytes, 640*480*3);
         sender.sendFrame();
         
-    } else if(grabber.isFrameNew()){
+    }
+     //   else if(grabber.isFrameNew()){
         
         ofBuffer buffer;
         buffer.set((char*)data, 640 * 480 * 3);
@@ -49,7 +53,7 @@ void testApp::update(){
         //    x264Encoder.encodeFrame(data, 640 * 480 * 3);
         
         sender.sendFrame();
-    }
+   //}
     
     
     
@@ -68,7 +72,7 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-    ofBackgroundGradient(ofColor(50,50,50), ofColor(0,0,0));
+    ofBackgroundGradient(ofColor(78,28,28), ofColor(25,14,14),OF_GRADIENT_LINEAR);
    // inputImage.draw(0,0,640,480);
     grabber.draw(0, 0, 640, 480);
     

@@ -47,12 +47,18 @@ void ofxStreamerSender::setup(int _width, int _height, string destination_ip, in
     //Initialize the h264 encoder
     x264_param_t param;
     x264_param_default_preset(&param, preset.c_str(), "zerolatency");
+    param.i_frame_reference = 1;
+    
     param.i_threads = 1;
     param.b_sliced_threads = 5;
+    param.i_slice_max_size = 8192;
     param.i_width = width;
     param.i_height = height;
     param.i_fps_num = 30;
     param.i_fps_den = 1;
+    param.i_sync_lookahead = 0;
+    
+    param.i_bframe = 0;
     // Intra refres:
     param.i_keyint_max = 30;
     param.b_intra_refresh = 1;
