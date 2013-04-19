@@ -1,8 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxX264Encoder.h"
-#include "ofxX264Decoder.h"
+#include "ofxStreamer.h"
 
 class testApp : public ofBaseApp{
 	public:
@@ -20,12 +19,6 @@ class testApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
     
-    ofxX264Encoder x264Encoder;
-    ofxX264Decoder x264Decoder;
+    ofxStreamerReceiver receiver;
     
-    ofImage inputImage;
-    
-    ofVideoGrabber grabber;
-    
-    unsigned char * data ;
 };

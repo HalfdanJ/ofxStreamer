@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		044097571721420900F224F6 /* libbz2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 044097561721420900F224F6 /* libbz2.a */; };
-		044C9DD21720241B000F3A9C /* ofxX264Decoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 044C9DD11720241B000F3A9C /* ofxX264Decoder.cpp */; };
-		044C9DD617203A72000F3A9C /* libiconv.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 044C9DD517203A72000F3A9C /* libiconv.2.dylib */; };
+		044C9DD21720241B000F3A9C /* ofxStreamerReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 044C9DD11720241B000F3A9C /* ofxStreamerReceiver.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
+		DD196CA81721A1D200ACAB87 /* libiconv.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DD196CA71721A1D200ACAB87 /* libiconv.2.dylib */; };
 		DD76B7541720057400965044 /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B74C1720057400965044 /* libavcodec.a */; };
 		DD76B7551720057400965044 /* libavdevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B74D1720057400965044 /* libavdevice.a */; };
 		DD76B7561720057400965044 /* libavfilter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B74E1720057400965044 /* libavfilter.a */; };
@@ -19,7 +19,7 @@
 		DD76B7591720057400965044 /* libswresample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B7511720057400965044 /* libswresample.a */; };
 		DD76B75A1720057400965044 /* libswscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B7521720057400965044 /* libswscale.a */; };
 		DD76B75B1720057400965044 /* libx264.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B7531720057400965044 /* libx264.a */; };
-		DDF2ABAE171EDE42000B5379 /* ofxX264Encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDF2ABAC171EDE42000B5379 /* ofxX264Encoder.cpp */; };
+		DDF2ABAE171EDE42000B5379 /* ofxStreamerSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDF2ABAC171EDE42000B5379 /* ofxStreamerSender.cpp */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
 		E45BE97C0E8CC7DD009D7055 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9720E8CC7DD009D7055 /* ApplicationServices.framework */; };
@@ -72,11 +72,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		044097561721420900F224F6 /* libbz2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libbz2.a; sourceTree = "<group>"; };
-		044C9DD017202400000F3A9C /* ofxX264Decoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxX264Decoder.h; sourceTree = "<group>"; };
-		044C9DD11720241B000F3A9C /* ofxX264Decoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxX264Decoder.cpp; sourceTree = "<group>"; };
-		044C9DD517203A72000F3A9C /* libiconv.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libiconv.2.dylib; sourceTree = "<group>"; };
+		044097561721420900F224F6 /* libbz2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libbz2.a; path = ../libs/osx/libbz2.a; sourceTree = "<group>"; };
+		044C9DD017202400000F3A9C /* ofxStreamerReceiver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxStreamerReceiver.h; sourceTree = "<group>"; };
+		044C9DD11720241B000F3A9C /* ofxStreamerReceiver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxStreamerReceiver.cpp; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
+		DD196B7617219EF800ACAB87 /* ofxStreamer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxStreamer.h; sourceTree = "<group>"; };
+		DD196CA71721A1D200ACAB87 /* libiconv.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.2.dylib; path = ../libs/osx/libiconv.2.dylib; sourceTree = "<group>"; };
 		DD76B74C1720057400965044 /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = ../libs/osx/libavcodec.a; sourceTree = "<group>"; };
 		DD76B74D1720057400965044 /* libavdevice.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavdevice.a; path = ../libs/osx/libavdevice.a; sourceTree = "<group>"; };
 		DD76B74E1720057400965044 /* libavfilter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavfilter.a; path = ../libs/osx/libavfilter.a; sourceTree = "<group>"; };
@@ -85,8 +86,8 @@
 		DD76B7511720057400965044 /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswresample.a; path = ../libs/osx/libswresample.a; sourceTree = "<group>"; };
 		DD76B7521720057400965044 /* libswscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswscale.a; path = ../libs/osx/libswscale.a; sourceTree = "<group>"; };
 		DD76B7531720057400965044 /* libx264.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libx264.a; path = ../libs/osx/libx264.a; sourceTree = "<group>"; };
-		DDF2ABAC171EDE42000B5379 /* ofxX264Encoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxX264Encoder.cpp; sourceTree = "<group>"; };
-		DDF2ABAD171EDE42000B5379 /* ofxX264Encoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxX264Encoder.h; sourceTree = "<group>"; };
+		DDF2ABAC171EDE42000B5379 /* ofxStreamerSender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxStreamerSender.cpp; sourceTree = "<group>"; };
+		DDF2ABAD171EDE42000B5379 /* ofxStreamerSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxStreamerSender.h; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
 		E45BE9720E8CC7DD009D7055 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
@@ -97,7 +98,7 @@
 		E45BE9770E8CC7DD009D7055 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
 		E45BE9790E8CC7DD009D7055 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		E45BE97A0E8CC7DD009D7055 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
-		E4B69B5B0A3A1756003C02F2 /* x264ExampleDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = x264ExampleDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4B69B5B0A3A1756003C02F2 /* streamerSenderExampleDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = streamerSenderExampleDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B69E1D0A3A1BDC003C02F2 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = testApp.cpp; path = src/testApp.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1F0A3A1BDC003C02F2 /* testApp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = testApp.h; path = src/testApp.h; sourceTree = SOURCE_ROOT; };
@@ -142,8 +143,8 @@
 				DD76B7591720057400965044 /* libswresample.a in Frameworks */,
 				DD76B75A1720057400965044 /* libswscale.a in Frameworks */,
 				DD76B75B1720057400965044 /* libx264.a in Frameworks */,
-				044C9DD617203A72000F3A9C /* libiconv.2.dylib in Frameworks */,
 				044097571721420900F224F6 /* libbz2.a in Frameworks */,
+				DD196CA81721A1D200ACAB87 /* libiconv.2.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,7 +154,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
-				DDF2ABA2171EDE05000B5379 /* ofxX264 */,
+				DDF2ABA2171EDE05000B5379 /* ofxStreamer */,
 			);
 			name = addons;
 			sourceTree = "<group>";
@@ -188,20 +189,20 @@
 			name = "3rd party frameworks";
 			sourceTree = "<group>";
 		};
-		DDF2ABA2171EDE05000B5379 /* ofxX264 */ = {
+		DDF2ABA2171EDE05000B5379 /* ofxStreamer */ = {
 			isa = PBXGroup;
 			children = (
 				DDF2ABAB171EDE37000B5379 /* src */,
 				DDF2ABA3171EDE18000B5379 /* libs */,
 			);
-			name = ofxX264;
+			name = ofxStreamer;
 			sourceTree = "<group>";
 		};
 		DDF2ABA3171EDE18000B5379 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				DD196CA71721A1D200ACAB87 /* libiconv.2.dylib */,
 				044097561721420900F224F6 /* libbz2.a */,
-				044C9DD517203A72000F3A9C /* libiconv.2.dylib */,
 				DD76B74C1720057400965044 /* libavcodec.a */,
 				DD76B74D1720057400965044 /* libavdevice.a */,
 				DD76B74E1720057400965044 /* libavfilter.a */,
@@ -217,10 +218,11 @@
 		DDF2ABAB171EDE37000B5379 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				DDF2ABAC171EDE42000B5379 /* ofxX264Encoder.cpp */,
-				DDF2ABAD171EDE42000B5379 /* ofxX264Encoder.h */,
-				044C9DD017202400000F3A9C /* ofxX264Decoder.h */,
-				044C9DD11720241B000F3A9C /* ofxX264Decoder.cpp */,
+				DDF2ABAC171EDE42000B5379 /* ofxStreamerSender.cpp */,
+				DDF2ABAD171EDE42000B5379 /* ofxStreamerSender.h */,
+				044C9DD017202400000F3A9C /* ofxStreamerReceiver.h */,
+				044C9DD11720241B000F3A9C /* ofxStreamerReceiver.cpp */,
+				DD196B7617219EF800ACAB87 /* ofxStreamer.h */,
 			);
 			name = src;
 			path = ../src;
@@ -252,7 +254,7 @@
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				BB4B014C10F69532006C3DED /* addons */,
 				E45BE5980E8CC70C009D7055 /* frameworks */,
-				E4B69B5B0A3A1756003C02F2 /* x264ExampleDebug.app */,
+				E4B69B5B0A3A1756003C02F2 /* streamerSenderExampleDebug.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -278,9 +280,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E4B69B5A0A3A1756003C02F2 /* x264Example */ = {
+		E4B69B5A0A3A1756003C02F2 /* streamerSenderExample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "x264Example" */;
+			buildConfigurationList = E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "streamerSenderExample" */;
 			buildPhases = (
 				E4B69B580A3A1756003C02F2 /* Sources */,
 				E4B69B590A3A1756003C02F2 /* Frameworks */,
@@ -292,9 +294,9 @@
 			dependencies = (
 				E4EEB9AC138B136A00A80321 /* PBXTargetDependency */,
 			);
-			name = x264Example;
+			name = streamerSenderExample;
 			productName = myOFApp;
-			productReference = E4B69B5B0A3A1756003C02F2 /* x264ExampleDebug.app */;
+			productReference = E4B69B5B0A3A1756003C02F2 /* streamerSenderExampleDebug.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -302,7 +304,7 @@
 /* Begin PBXProject section */
 		E4B69B4C0A3A1720003C02F2 /* Project object */ = {
 			isa = PBXProject;
-			buildConfigurationList = E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "x264Example" */;
+			buildConfigurationList = E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "streamerSenderExample" */;
 			compatibilityVersion = "Xcode 2.4";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -323,7 +325,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				E4B69B5A0A3A1756003C02F2 /* x264Example */,
+				E4B69B5A0A3A1756003C02F2 /* streamerSenderExample */,
 			);
 		};
 /* End PBXProject section */
@@ -361,8 +363,8 @@
 			files = (
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* testApp.cpp in Sources */,
-				DDF2ABAE171EDE42000B5379 /* ofxX264Encoder.cpp in Sources */,
-				044C9DD21720241B000F3A9C /* ofxX264Decoder.cpp in Sources */,
+				DDF2ABAE171EDE42000B5379 /* ofxStreamerSender.cpp in Sources */,
+				044C9DD21720241B000F3A9C /* ofxStreamerReceiver.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -535,19 +537,20 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_6)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../libs/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5 = "\"$(SRCROOT)\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_6 = "\"$(SRCROOT)/../libs/osx\"";
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_LIBS)",
 					"$(OTHER_LDFLAGS_QUOTED_FOR_TARGET_1)",
 				);
-				OTHER_LDFLAGS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/libiconv.2.dylib\"";
 				PREBINDING = NO;
-				PRODUCT_NAME = x264ExampleDebug;
+				PRODUCT_NAME = streamerSenderExampleDebug;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -642,19 +645,20 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_6)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../libs/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5 = "\"$(SRCROOT)\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_6 = "\"$(SRCROOT)/../libs/osx\"";
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_LIBS)",
 					"$(OTHER_LDFLAGS_QUOTED_FOR_TARGET_1)",
 				);
-				OTHER_LDFLAGS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/libiconv.2.dylib\"";
 				PREBINDING = NO;
-				PRODUCT_NAME = x264Example;
+				PRODUCT_NAME = streamerSenderExample;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -662,7 +666,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "x264Example" */ = {
+		E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "streamerSenderExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4B69B4E0A3A1720003C02F2 /* Debug */,
@@ -671,7 +675,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "x264Example" */ = {
+		E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "streamerSenderExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4B69B600A3A1757003C02F2 /* Debug */,

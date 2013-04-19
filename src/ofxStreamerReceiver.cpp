@@ -1,5 +1,5 @@
 //
-//  ofxX264Decoder.c
+//  ofxStreamerReceiver.c
 //  x264Example
 //
 //  Created by Johan Bichel Lindegaard on 4/18/13.
@@ -7,11 +7,11 @@
 //
 
 
-#include "ofxX264Decoder.h"
+#include "ofxStreamerReceiver.h"
 
 using namespace std;
 
-ofxX264Decoder::ofxX264Decoder(){
+ofxStreamerReceiver::ofxStreamerReceiver(){
     
     bHavePixelsChanged = false;
     allocated = false;
@@ -19,7 +19,7 @@ ofxX264Decoder::ofxX264Decoder(){
         
 }
 
-bool ofxX264Decoder::setup(int _port, string _host) {
+bool ofxStreamerReceiver::setup(int _port, string _host) {
     port = _port; host = _host;
     string url = host + ":" + ofToString(port);
     ofLog(OF_LOG_NOTICE, "Opening stream at " + url);
@@ -93,7 +93,7 @@ bool ofxX264Decoder::setup(int _port, string _host) {
     return connected = true;
 }
 
-void ofxX264Decoder::update() {
+void ofxStreamerReceiver::update() {
     
     if (av_read_frame(context,&packet)>=0 ) {
 
@@ -126,32 +126,32 @@ void ofxX264Decoder::update() {
     
 }
 
-void ofxX264Decoder::draw(const ofPoint &p) {
+void ofxStreamerReceiver::draw(const ofPoint &p) {
     draw(p.x, p.y);
 }
 
-void ofxX264Decoder::draw(float x, float y) {
+void ofxStreamerReceiver::draw(float x, float y) {
     draw(x, y, getWidth(), getHeight());
 }
 
-void ofxX264Decoder::draw(const ofRectangle &r) {
+void ofxStreamerReceiver::draw(const ofRectangle &r) {
     draw(r.x, r.y, r.width, r.height);
 }
 
-unsigned char * ofxX264Decoder::getPixels() {
+unsigned char * ofxStreamerReceiver::getPixels() {
     return lastFrame->getPixels();
 }
 
-void ofxX264Decoder::draw(float x, float y, float w, float h) {
+void ofxStreamerReceiver::draw(float x, float y, float w, float h) {
     lastFrame->draw(x,y,w,h);
 }
 
 
-bool ofxX264Decoder::isFrameNew() {
+bool ofxStreamerReceiver::isFrameNew() {
     return (bHavePixelsChanged);
 }
 
-void ofxX264Decoder::close() {
+void ofxStreamerReceiver::close() {
     av_free(pic);
     av_free(picrgb);
     av_free(picture_buf);
@@ -161,10 +161,10 @@ void ofxX264Decoder::close() {
     avformat_free_context(oc);
 }
 
-float ofxX264Decoder::getWidth() {
+float ofxStreamerReceiver::getWidth() {
     return width;
 }
 
-float ofxX264Decoder::getHeight() {
+float ofxStreamerReceiver::getHeight() {
     return height;
 }

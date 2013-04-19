@@ -1,5 +1,5 @@
 //
-//  ofxX264Decoder.h
+//  ofxStreamerReceiver.h
 //  x264Example
 //
 //  Created by Johan Bichel Lindegaard on 4/18/13.
@@ -11,7 +11,8 @@
 #define 	FF_INPUT_BUFFER_PADDING_SIZE   16
 #define     INBUF_SIZE 4096
 
-#include <ofMain.h>
+#include "ofMain.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
@@ -26,10 +27,10 @@ extern "C"
 #include <libswscale/swscale.h>
 }
 
-class ofxX264Decoder {
+class ofxStreamerReceiver {
     
 public:
-    ofxX264Decoder();
+    ofxStreamerReceiver();
     
     bool connected;
     

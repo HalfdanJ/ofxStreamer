@@ -6,19 +6,19 @@
 //
 //
 
-#include "ofxX264Encoder.h"
+#include "ofxStreamerSender.h"
 
 
 
 
 
-ofxX264Encoder::ofxX264Encoder(){
+ofxStreamerSender::ofxStreamerSender(){
     
 }
 
 
 
-void ofxX264Encoder::setup(int _width, int _height, string destination_ip, int destination_port ,const char * preset){
+void ofxStreamerSender::setup(int _width, int _height, string destination_ip, int destination_port ,const char * preset){
     width = _width,
     height = _height;
     
@@ -117,7 +117,7 @@ void ofxX264Encoder::setup(int _width, int _height, string destination_ip, int d
 }
 
 
-bool ofxX264Encoder::encodeFrame(ofImage image){
+bool ofxStreamerSender::encodeFrame(ofImage image){
     if(image.type != OF_IMAGE_COLOR){
         cout<<"Only implemented OF_IMAGE_COLOR type image in encodeFrame"<<endl;
         return false;
@@ -129,7 +129,7 @@ bool ofxX264Encoder::encodeFrame(ofImage image){
     return encodeFrame(data, length);
 }
 	
-bool ofxX264Encoder::encodeFrame(unsigned char *data, int data_length){
+bool ofxStreamerSender::encodeFrame(unsigned char *data, int data_length){
     encodedFrameSize = 0;
     
 
@@ -155,7 +155,7 @@ bool ofxX264Encoder::encodeFrame(unsigned char *data, int data_length){
 }
 
 
-bool ofxX264Encoder::sendFrame(){
+bool ofxStreamerSender::sendFrame(){
     if(encodedFrameSize == 0){
         ofLog(OF_LOG_WARNING, "No encoded frame to send, make sure to call encodeFrame");
         return false;
@@ -185,7 +185,7 @@ bool ofxX264Encoder::sendFrame(){
 }
 
 
-x264_picture_t* ofxX264Encoder::getPictureRef(){
+x264_picture_t* ofxStreamerSender::getPictureRef(){
     return picture_out;
 }
 

@@ -24,11 +24,11 @@ extern "C" {
 
 
 
-class ofxX264Encoder {
+class ofxStreamerSender {
     
     
 public:
-    ofxX264Encoder();
+    ofxStreamerSender();
     
     void setup(int width, int height, string destination_ip = "127.0.0.1", int destination_port= 1234, const char * preset="ultrafast");
     
