@@ -48,19 +48,13 @@ ofxX264Decoder::ofxX264Decoder(){
     
     cout<<"try to open stream"<<endl;
     
-    // where to use this ?
-    AVDictionary * dict;
-    av_dict_set( &dict, "video_size", "320x240",0);
-    
     string url = "udp://@:1234";
-    string format = "h264"; // mpeg2video, x264, mpegts, h264 ? 
     
-    AVInputFormat *fmt = NULL;
+    //string format = "x264"; // mpeg2video, x264, mpegts, h264 ?
+    //AVInputFormat *fmt = NULL;
+    //fmt = av_find_input_format(format.c_str());
     
-    int res;
-    
-    fmt = av_find_input_format(format.c_str());
-    if(avformat_open_input(&context, url.c_str(),fmt,NULL) != 0){
+    if(avformat_open_input(&context, url.c_str(),NULL,NULL) != 0){
         return EXIT_FAILURE;
     }
     
@@ -161,11 +155,8 @@ ofxX264Decoder::ofxX264Decoder(){
     avio_close(oc->pb);
     avformat_free_context(oc);
     
-    
     cout<<"exit"<<endl;
     return (EXIT_SUCCESS);
-    
-    
     
 }
 
