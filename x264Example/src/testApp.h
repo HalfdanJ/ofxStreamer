@@ -24,4 +24,6 @@ class testApp : public ofBaseApp{
  //   ofxX264Decoder x264Decoder;
     
     ofImage inputImage;
+    
+    unsigned char * data ;
 };

@@ -35,7 +35,7 @@ ffmpeg
 
 	$ git clone git://source.ffmpeg.org/ffmpeg.git ffmpeg
 	$ cd ffmpeg
-	$ ./configure --cc="clang -m32"
+	$ ./configure --cc="clang -m32" --enable-gpl --prefix="/Users/jonas/Desktop/ffmpeg"  --enable-libx264 
 	$ make
 
 x264

@@ -20,6 +20,9 @@ extern "C" {
 #include <libswscale/swscale.h>
 }
 
+#include "ofMain.h"
+
+
 #define FPS         30
 #define BITRATE     400000
 #define RTP_ADDRESS "127.0.0.1"
@@ -33,17 +36,23 @@ class ofxX264Encoder {
 public:
     ofxX264Encoder();
     
-    void setup(int width, int height);
+    void setup(int width, int height, string destination_ip = "127.0.0.1", int destination_port= 1234, const char * preset="ultrafast");
     
-    bool encodeData(unsigned char *data, int data_length, int stride, int height );
+    //Supports only RGB formatted image data (so data_length should be width*height*3)
+    bool encodeFrame(unsigned char *data, int data_length);
+    
+    bool encodeFrame(ofImage image);
+    
+    //Sends the encoded frame
+    bool sendFrame();
     
     int width;
     int height;
     
     
-    x264_picture_t * getPicture();
+    x264_picture_t * getPictureRef();
     
-    
+    //Raw encoded h264 frame data
     unsigned char * encodedFrameData;
     int encodedFrameSize;
     
@@ -54,6 +63,7 @@ private:
 
     x264_picture_t picture_in;
     x264_picture_t * picture_out;
+    AVStream * stream;
 
 
 };
