@@ -30,7 +30,7 @@ class ofxStreamerSender {
 public:
     ofxStreamerSender();
     
-    void setup(int width, int height, string destination_ip = "127.0.0.1", int destination_port= 1234, const char * preset="ultrafast");
+    void setup(int width, int height, string destination_ip = "127.0.0.1", int destination_port= 1234, string preset="ultrafast");
     
     //Supports only RGB formatted image data (so data_length should be width*height*3)
     bool encodeFrame(unsigned char *data, int data_length);
@@ -43,6 +43,14 @@ public:
     int width;
     int height;
     
+    int frameNum;
+    int bitrate;
+    float frameRate;
+
+    string url;
+    
+    string preset;
+
     
     x264_picture_t * getPictureRef();
     
@@ -58,6 +66,8 @@ private:
     x264_picture_t picture_in;
     x264_picture_t * picture_out;
     AVStream * stream;
+    
+    long long lastSendTime;
 
 
 };
