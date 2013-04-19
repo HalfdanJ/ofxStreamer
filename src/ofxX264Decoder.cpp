@@ -7,19 +7,9 @@
 //
 
 
-// An HBO RTSP stream
-//"http://59.124.145.72:17282";
-
-// Original from example
-//"rtsp://134.169.178.187:8554/h264.3gp"
-
-
-
 #include "ofxX264Decoder.h"
 
 using namespace std;
-
-
 
 ofxX264Decoder::ofxX264Decoder(){
     
@@ -93,7 +83,8 @@ bool ofxX264Decoder::setup(int _port, string _host) {
     picrgb = avcodec_alloc_frame();
     int size2 = avpicture_get_size(PIX_FMT_RGB24, width, height);
     uint8_t* picture_buf2 = (uint8_t*)(av_malloc(size2));
-    avpicture_fill((AVPicture *) pic, picture_buf, PIX_FMT_YUV420P, width, height);
+    avpicture_fill((AVPicture *
+                    ) pic, picture_buf, PIX_FMT_YUV420P, width, height);
     avpicture_fill((AVPicture *) picrgb, picture_buf2, PIX_FMT_RGB24, width, height);
     
     return connected = true;
@@ -118,13 +109,15 @@ void ofxX264Decoder::update() {
             cout << "4 decoding" << endl;
             int result = avcodec_decode_video2(ccontext, pic, &check, &packet);
             cout << "Bytes decoded " << result << " check " << check << endl;
-
-            sws_scale(img_convert_ctx, pic->data, pic->linesize, 0, ccontext->height, picrgb->data, picrgb->linesize);
             
-            for(int y = 0; y < ccontext->height; y++)
-            {
-                for(int x = 0; x < width * 3; x++) {
-                    //myfile << (int)(picrgb->data[0] + y * picrgb->linesize[0])[x] << " ";
+            if(cnt > 100) {
+                sws_scale(img_convert_ctx, pic->data, pic->linesize, 0, ccontext->height, picrgb->data, picrgb->linesize);
+                
+                for(int y = 0; y < ccontext->height; y++)
+                {
+                    for(int x = 0; x < width * 3; x++) {
+                        //myfile << (int)(picrgb->data[0] + y * picrgb->linesize[0])[x] << " ";
+                    }
                 }
             }
             
