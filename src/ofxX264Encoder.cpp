@@ -12,7 +12,6 @@
 
 
 
-
 ofxX264Encoder::ofxX264Encoder(){
     
 }
@@ -40,11 +39,7 @@ bool ofxX264Encoder::encodeData(unsigned char *data, int data_length, int stride
         encodedFrameSize = frame_size ;
     }
     
-    for( int nIndex = 0; nIndex < m_vNALs.size(); nIndex++ )
-    {
-    //    fwrite( m_vNALs[ nIndex ], m_vSizes[ nIndex ], 1, pFile );
-        
-    }
+    
     
 }
 
@@ -100,6 +95,46 @@ void ofxX264Encoder::setup(int _width, int _height){
     
     
     picture_out = (x264_picture_t*) malloc(sizeof(x264_picture_t));
+    
+    
+    
+    av_register_all();
+    
+    
+    // initalize the AV context
+    avctx = avformat_alloc_context();
+    if (!avctx)
+    {
+        printf("Couldn't initalize AVFormat output context");
+        exit(0);
+    }
+    
+    // get the output format
+    AVOutputFormat * fmt = av_guess_format("rtp", NULL, NULL);
+    if (!fmt)
+    {
+        printf("Unsuitable output format");
+        exit(0);
+    }
+    avctx->oformat = fmt;
+
+//  struct AVStream* stream = av_new_stream(avctx, 1);
+    
+    // initalize codec
+    /*AVCodecContext* c = stream->codec;
+    c->codec_id = CODEC_ID_H264;
+    c->codec_type = AVMEDIA_TYPE_VIDEO;
+    c->flags = CODEC_FLAG_GLOBAL_HEADER;
+    c->width = width;
+    c->height = height;
+    c->time_base.den = FPS;
+    c->time_base.num = 1;
+    c->gop_size = FPS;
+    c->bit_rate = BITRATE;
+//    avctx->flags = AVFMT_FLAG_RTP_HINT;
+    
+    // write the header
+//    av_write_header(avctx);
 
 /*
 
