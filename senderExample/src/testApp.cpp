@@ -2,6 +2,7 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
+    ofSetWindowTitle("Sender");
     ofLogLevel(OF_LOG_WARNING);
     
 //    sender.setup(640, 480, "jive.local", 1234);
@@ -16,7 +17,6 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
     grabber.update();
-    
     
     ofLogLevel(OF_LOG_WARNING);
     
