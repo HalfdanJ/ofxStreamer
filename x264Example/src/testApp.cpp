@@ -4,16 +4,18 @@
 void testApp::setup(){
     ofLogLevel(OF_LOG_WARNING);
     
-//    x264Encoder.setup(640, 480, "jive.local", 1234);
-    x264Encoder.setup(640, 480);
+    x264Encoder.setup(640, 480, "jive.local", 1234);
+   // x264Encoder.setup(640, 480);
     
     data = (unsigned char*) malloc(sizeof(char)* 640 * 480 * 3*10);
+    
+    grabber.initGrabber(640, 480);
     
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
-    
+    grabber.update();
     
     
     
@@ -30,12 +32,13 @@ void testApp::update(){
 //    cout<<ofGetFrameRate()<<endl;
     
     
+    
     ofBuffer buffer;
     buffer.set((char*)data, 640 * 480 * 3);
     
     inputImage.setFromPixels(data, 640, 480, OF_IMAGE_COLOR);
     
-    x264Encoder.encodeFrame(inputImage);
+    x264Encoder.encodeFrame(grabber.getPixels(),  640 * 480 * 3);
 //    x264Encoder.encodeFrame(data, 640 * 480 * 3);
 
     x264Encoder.sendFrame();
@@ -45,7 +48,8 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
     ofBackground(0,0,0);
-    inputImage.draw(0,0,640,480);
+   // inputImage.draw(0,0,640,480);
+    grabber.draw(0, 0, 640, 480);
 }
 
 //--------------------------------------------------------------

@@ -25,5 +25,7 @@ class testApp : public ofBaseApp{
     
     ofImage inputImage;
     
+    ofVideoGrabber grabber;
+    
     unsigned char * data ;
 };
