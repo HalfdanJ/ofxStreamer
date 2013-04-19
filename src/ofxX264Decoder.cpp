@@ -6,6 +6,15 @@
 //
 //
 
+
+// An HBO RTSP stream
+//"http://59.124.145.72:17282";
+
+// Original from example
+//"rtsp://134.169.178.187:8554/h264.3gp"
+
+
+
 #include "ofxX264Decoder.h"
 
 using namespace std;
@@ -37,13 +46,21 @@ ofxX264Decoder::ofxX264Decoder(){
     avformat_network_init();
     //av_log_set_callback(&log_callback);
     
-    //open rtsp
-    cout<<"try to open rtsp stream"<<endl;
+    cout<<"try to open stream"<<endl;
     
-    static string streamAddress = "http://59.124.145.72:17282";
-    //"rtsp://134.169.178.187:8554/h264.3gp"
+    // where to use this ?
+    AVDictionary * dict;
+    av_dict_set( &dict, "video_size", "320x240",0);
     
-    if(avformat_open_input(&context, streamAddress.c_str(),NULL,NULL) != 0){
+    string url = "udp://@:1234";
+    string format = "h264"; // mpeg2video, x264, mpegts, h264 ? 
+    
+    AVInputFormat *fmt = NULL;
+    
+    int res;
+    
+    fmt = av_find_input_format(format.c_str());
+    if(avformat_open_input(&context, url.c_str(),fmt,NULL) != 0){
         return EXIT_FAILURE;
     }
     
@@ -61,15 +78,15 @@ ofxX264Decoder::ofxX264Decoder(){
     av_init_packet(&packet);
     
     //open output file
-    //AVOutputFormat* fmt = av_guess_format(NULL,"test2.mp4",NULL);
+   // AVOutputFormat* fmto = av_guess_format(NULL,"test2.mp4",NULL);
     AVFormatContext* oc = avformat_alloc_context();
-    //oc->oformat = fmt;
+    //oc->oformat = fmto;
     //avio_open2(&oc->pb, "test.mp4", AVIO_FLAG_WRITE,NULL,NULL);
     
     AVStream* stream=NULL;
     int cnt = 0;
     //start reading packets from stream and write them to file
-    av_read_play(context);//play RTSP
+    av_read_play(context);//play stream
     
     AVCodec *codec = NULL;
     codec = avcodec_find_decoder(CODEC_ID_H264);
@@ -77,7 +94,7 @@ ofxX264Decoder::ofxX264Decoder(){
     
     avcodec_get_context_defaults3(ccontext, codec);
     avcodec_copy_context(ccontext,context->streams[video_stream_index]->codec);
-    std::ofstream myfile;
+    ofstream myfile;
     
     if (avcodec_open2(ccontext, codec, NULL) < 0) exit(1);
     
@@ -93,38 +110,42 @@ ofxX264Decoder::ofxX264Decoder(){
     avpicture_fill((AVPicture *) pic, picture_buf, PIX_FMT_YUV420P, ccontext->width, ccontext->height);
     avpicture_fill((AVPicture *) picrgb, picture_buf2, PIX_FMT_RGB24, ccontext->width, ccontext->height);
     
+    cout<<"will read frames"<<endl;
     while(av_read_frame(context,&packet)>=0 && cnt <1000)
-    {//read 100 frames
+    {
         
-        std::cout << "1 Frame: " << cnt << std::endl;
+        cout << "1 Frame: " << cnt << endl;
         if(packet.stream_index == video_stream_index){//packet is video
-            std::cout << "2 Is Video" << std::endl;
+            cout << "2 Is Video" << endl;
             if(stream == NULL)
             {//create stream in file
-                std::cout << "3 create stream" << std::endl;
+                cout << "3 create stream" << endl;
                 stream = avformat_new_stream(oc,context->streams[video_stream_index]->codec->codec);
                 avcodec_copy_context(stream->codec,context->streams[video_stream_index]->codec);
                 stream->sample_aspect_ratio = context->streams[video_stream_index]->codec->sample_aspect_ratio;
             }
             int check = 0;
             packet.stream_index = stream->id;
-            std::cout << "4 decoding" << std::endl;
+            cout << "4 decoding" << endl;
             int result = avcodec_decode_video2(ccontext, pic, &check, &packet);
-            std::cout << "Bytes decoded " << result << " check " << check << std::endl;
+            cout << "Bytes decoded " << result << " check " << check << endl;
             if(cnt > 100)//cnt < 0)
             {
                 sws_scale(img_convert_ctx, pic->data, pic->linesize, 0, ccontext->height, picrgb->data, picrgb->linesize);
-                std::stringstream name;
+                stringstream name;
                 name << "test" << cnt << ".ppm";
                 
                 myfile.open(name.str().c_str());
                 myfile << "P3 " << ccontext->width << " " << ccontext->height << " 255\n";
+                
                 for(int y = 0; y < ccontext->height; y++)
                 {
                     for(int x = 0; x < ccontext->width * 3; x++)
                         myfile << (int)(picrgb->data[0] + y * picrgb->linesize[0])[x] << " ";
                 }
+                
                 myfile.close();
+                
             }
             cnt++;
         }
@@ -148,7 +169,7 @@ ofxX264Decoder::ofxX264Decoder(){
     
 }
 
-void ofxX264Decoder::pgm_save(unsigned char *buf, int wrap, int xsize, int ysize,
+/*void ofxX264Decoder::pgm_save(unsigned char *buf, int wrap, int xsize, int ysize,
                      char *filename)
 {
     FILE *f;
@@ -158,7 +179,7 @@ void ofxX264Decoder::pgm_save(unsigned char *buf, int wrap, int xsize, int ysize
     for(i=0;i<ysize;i++)
         fwrite(buf + i * wrap,1,xsize,f);
     fclose(f);
-}
+}*/
 
 
 
@@ -174,13 +195,13 @@ void ofxX264Decoder::log_callback(void *ptr, int level, const char *fmt, va_list
     }
     vsnprintf(message, sizeof(message), fmt, vargs);
     
-    std::cout << "LOG: " << message << std::endl;
+    cout << "LOG: " << message << endl;
 }
 
 
 
 
-int ofxX264Decoder::decode_write_frame(const char *outfilename, AVCodecContext *avctx,
+/*int ofxX264Decoder::decode_write_frame(const char *outfilename, AVCodecContext *avctx,
                               AVFrame *frame, int *frame_count, AVPacket *pkt, int last)
 {
     int len, got_frame;
@@ -193,7 +214,7 @@ int ofxX264Decoder::decode_write_frame(const char *outfilename, AVCodecContext *
     if (got_frame) {
         printf("Saving %sframe %3d\n", last ? "last " : "", *frame_count);
         fflush(stdout);
-        /* the picture is allocated by the decoder, no need to free it */
+        // the picture is allocated by the decoder, no need to free it 
         snprintf(buf, sizeof(buf), outfilename, *frame_count);
         
         pgm_save(frame->data[0], frame->linesize[0],
@@ -206,7 +227,7 @@ int ofxX264Decoder::decode_write_frame(const char *outfilename, AVCodecContext *
         pkt->data += len;
     }
     return 0;
-}
+}*/
 
 
 /*void ofxX264Decoder::video_decode_example(const char *outfilename, const char *filename)
@@ -219,11 +240,12 @@ int ofxX264Decoder::decode_write_frame(const char *outfilename, AVCodecContext *
     uint8_t inbuf[INBUF_SIZE + FF_INPUT_BUFFER_PADDING_SIZE];
     AVPacket avpkt;
     av_init_packet(&avpkt);
-    /* set end of buffer to 0 (this ensures that no overreading happens for damaged mpeg streams) */
-    /*memset(inbuf + INBUF_SIZE, 0, FF_INPUT_BUFFER_PADDING_SIZE);
-    printf("Decode video file %s to %s\n", filename, outfilename);/*
-    /* find the mpeg1 video decoder */
-    /*codec = avcodec_find_decoder(AV_CODEC_ID_MPEG1VIDEO);
+    // set end of buffer to 0 (this ensures that no overreading happens for damaged mpeg streams)
+    //memset(inbuf + INBUF_SIZE, 0, FF_INPUT_BUFFER_PADDING_SIZE);
+    //printf("Decode video file %s to %s\n", filename, outfilename);
+    // find the mpeg1 video decoder 
+    //codec = avcodec_find_decoder(AV_CODEC_ID_MPEG1VIDEO);
+
     if (!codec) {
         fprintf(stderr, "Codec not found\n");
         exit(1);
@@ -235,9 +257,9 @@ int ofxX264Decoder::decode_write_frame(const char *outfilename, AVCodecContext *
     }
     if(codec->capabilities&CODEC_CAP_TRUNCATED)
         c->flags|= CODEC_FLAG_TRUNCATED;*/ /* we do not send complete frames */
-    /* For some codecs, such as msmpeg4 and mpeg4, width and height
-     MUST be initialized there because this information is not
-     available in the bitstream. */
+    // For some codecs, such as msmpeg4 and mpeg4, width and height
+    // MUST be initialized there because this information is not
+    // available in the bitstream.
     /* open it *//*
     if (avcodec_open2(c, codec, NULL) < 0) {
         fprintf(stderr, "Could not open codec\n");
