@@ -121,7 +121,7 @@ void ofxStreamerSender::setup(int _width, int _height, string destination_ip, in
     AVCodecContext* c = stream->codec;
     c->codec_id = CODEC_ID_H264;
     c->codec_type = AVMEDIA_TYPE_VIDEO;
-    c->bit_rate = 400000;
+    c->bit_rate = bitrate;
     c->width = width;
     c->height = height;
     c->time_base.den = 30;

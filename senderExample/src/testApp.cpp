@@ -5,22 +5,40 @@ void testApp::setup(){
     ofSetWindowTitle("Sender");
     ofLogLevel(OF_LOG_WARNING);
     
-    sender.setup(640, 480, "jive.local", 1234);
-    //sender.setup(640, 480);
+    //sender.setup(640, 480, "jive.local", 1234);
+    sender.setup(640, 480);
     
     data = (unsigned char*) malloc(sizeof(char)* 640 * 480 * 3*10);
     
     grabber.initGrabber(640, 480);
     
     
+    oscReceiver.setup(9999);
+    
     ofSetFrameRate(30);
+    
+    latency = 0;
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
     grabber.update();
     
-    if(grabber.isFrameNew()){
+    if(sendPing){
+        sendPing = false;
+        sendPingTime = ofGetElapsedTimeMillis();
+        
+        
+        unsigned char bytes[640*480*3];
+        for(int i=0;i<640*480*3;i++){
+            bytes[i] = 255;
+        }
+        
+        
+        sender.encodeFrame(bytes, 640*480*3);
+        sender.sendFrame();
+        
+    } else if(grabber.isFrameNew()){
         
         ofBuffer buffer;
         buffer.set((char*)data, 640 * 480 * 3);
@@ -31,6 +49,19 @@ void testApp::update(){
         //    x264Encoder.encodeFrame(data, 640 * 480 * 3);
         
         sender.sendFrame();
+    }
+    
+    
+    
+    if(oscReceiver.hasWaitingMessages()){
+        ofxOscMessage msg;
+        oscReceiver.getNextMessage(&msg);
+        
+        cout<<"Got message "<<msg.getAddress()<<endl;
+        
+        latency = ofGetElapsedTimeMillis() -  sendPingTime;
+        
+        cout<<"Diff "<<latency<<endl;
     }
 
 }
@@ -50,10 +81,18 @@ void testApp::draw(){
     ofDrawBitmapString("bitrate: "+ofToString(sender.bitrate)+" kbits/s", 650, y+=15);
     ofDrawBitmapString("URL: "+sender.url, 650, y+=35);
     ofDrawBitmapString("Preset: "+sender.preset, 650, y+=15);
+    
+    if(latency){
+        ofDrawBitmapString("Latency: "+ofToString(latency)+" ms", 650, y+=15);
+
+    } else {
+        ofDrawBitmapString("Latency: Press any key", 650, y+=15);
+    }
 }
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
+    sendPing = true;
 }
 
 //--------------------------------------------------------------

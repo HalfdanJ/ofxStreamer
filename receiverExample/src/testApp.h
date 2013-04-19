@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxStreamer.h"
+#include "ofxOsc.h"
 
 class testApp : public ofBaseApp{
 	public:
@@ -21,5 +22,8 @@ class testApp : public ofBaseApp{
         void exit();
     
     ofxStreamerReceiver receiver;
+    
+    //For latency calculation
+    ofxOscSender oscSender;
     
 };

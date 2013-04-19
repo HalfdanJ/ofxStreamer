@@ -5,6 +5,10 @@ void testApp::setup(){
     ofSetWindowTitle("Receiver");
     ofLogLevel(OF_LOG_WARNING);
     receiver.setup(1234);
+    
+    oscSender.setup("localhost.local", 9999);
+    
+    
 }
 
 //--------------------------------------------------------------
@@ -18,6 +22,13 @@ void testApp::draw(){
     
     if(receiver.isFrameNew()) {
         receiver.draw(0, 0);
+        
+        if(receiver.getPixels()[0] == 255){
+            ofxOscMessage msg;
+            msg.setAddress("/streamer/hello");
+            oscSender.sendMessage(msg);
+
+        }
     }
 }
 

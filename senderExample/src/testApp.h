@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxStreamer.h"
+#include "ofxOsc.h"
 
 class testApp : public ofBaseApp{
 	public:
@@ -20,10 +21,19 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
     
     ofxStreamerSender sender;
-    
+
+    //For latency calculation
+    ofxOscReceiver oscReceiver;
+  
     ofImage inputImage;
     
     ofVideoGrabber grabber;
     
     unsigned char * data ;
+    
+    
+    long long sendPingTime;
+    bool sendPing;
+    
+    int latency;
 };
