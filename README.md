@@ -1,20 +1,30 @@
+## About
+This addon is for streaming an image from one computer to another using H.264 protocol and ffmpeg as backbone.
+
 
 ## Installation
+Works currently only on Mac OS X. Tested on 10.8.3
 
 ### Dependencies
 
-Install ffmpeg wth x264 eg. using brew  
-
-	$ brew install ffmpeg
+	none
 
 ### Adding to another project
 Copy the folder to addons, remove example
+
+WRONG:
 
 	in other linker flags add "$(SRCROOT)/../libs/osx/libx264.a"  (or just drag the file into other linker flags)
 	in Header Search Path add "/usr/local/include"	
 
 
-### Compilaton notes
+### Save the stream from commandline
+If you would like to save the stream as a video file you can use ffmpeg like this:
+
+	$ ./ffmpeg -i "udp://@:1234" -vcodec libx264 output.mp4 
+
+
+### Compilaton notes (not needed to use the addon)
 
 #### libiconv
 
@@ -35,7 +45,7 @@ ffmpeg
 
 	$ git clone git://source.ffmpeg.org/ffmpeg.git ffmpeg
 	$ cd ffmpeg
-	$ ./configure --cc="clang -m32"
+	$ ./configure --cc="clang -m32" --enable-gpl --prefix="/Users/jonas/Desktop/ffmpeg"  --enable-libx264 
 	$ make
 
 x264
