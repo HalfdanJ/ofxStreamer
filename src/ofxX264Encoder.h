@@ -1,8 +1,8 @@
 //
-//  ofxX264.h
-//  x264Example
+//  ofxStreamer
+//  by Johan Bichel && Jonas Jongejan
+//  https://github.com/HalfdanJ/ofxStreamer
 //
-//  Created by Jonas Jongejan on 17/04/13.
 //
 //
 
@@ -21,12 +21,6 @@ extern "C" {
 }
 
 #include "ofMain.h"
-
-
-#define FPS         30
-#define BITRATE     400000
-#define RTP_ADDRESS "127.0.0.1"
-#define RTP_PORT    49990
 
 
 

@@ -45,10 +45,10 @@ void ofxX264Encoder::setup(int _width, int _height, string destination_ip, int d
     param.i_threads = 5;
     param.i_width = width;
     param.i_height = height;
-    param.i_fps_num = FPS;
+    param.i_fps_num = 30;
     param.i_fps_den = 1;
     // Intra refres:
-    param.i_keyint_max = FPS;
+    param.i_keyint_max = 30;
     param.b_intra_refresh = 1;
     //Rate control:
     param.rc.i_rc_method = X264_RC_CRF;
