@@ -38,7 +38,8 @@ public:
     int height;
     int port;
     std::string host;
-        
+    std::string url;
+    
     bool setup(int port, std::string host="udp://@");
     void update();
     bool isFrameNew();
@@ -53,6 +54,9 @@ public:
     float getHeight();
     float getWidth();
     bool isConnected();
+    long frameNum;
+    int bitrate;
+    float frameRate;
     
 private:
     struct SwsContext* imgctx;
@@ -68,8 +72,10 @@ private:
     AVPacket packet;
     AVStream* stream;
     int video_stream_index;
-    long frameNum;
+    long long lastReceiveTime;
+    
     ofImage * lastFrame;
+    int encodedFrameSize;
     
 };
 

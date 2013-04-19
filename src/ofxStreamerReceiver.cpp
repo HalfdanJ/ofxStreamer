@@ -19,7 +19,7 @@ ofxStreamerReceiver::ofxStreamerReceiver(){
 
 bool ofxStreamerReceiver::setup(int _port, string _host) {
     port = _port; host = _host;
-    string url = host + ":" + ofToString(port);
+    url = host + ":" + ofToString(port);
     ofLog(OF_LOG_NOTICE, "Opening stream at " + url);
     
     context = avformat_alloc_context();
@@ -110,34 +110,36 @@ void ofxStreamerReceiver::update() {
             int check = 0;
             packet.stream_index = stream->id;
             
+            encodedFrameSize = packet.size;
+            
             // decode
-            int result = avcodec_decode_video2(ccontext, pic, &check, &packet);
+            int result = avcodec_decode_video2(ccontext, pic, &check, &packet);            
             
-            cout<<pic->data<<endl;
-            cout<<pic->linesize<<endl;
-            
-            if(result > 0) {
+            if(result > 0 && check == 1) {
                 bHavePixelsChanged = true;
                 
                 sws_scale(img_convert_ctx, pic->data, pic->linesize, 0, ccontext->height, picrgb->data, picrgb->linesize);
             
                 // save frame to image
                 lastFrame->setFromPixels(picrgb->data[0], width, height, OF_IMAGE_COLOR);
-            
+                
+                float timeDiff = ofGetElapsedTimeMillis() - lastReceiveTime;
+                frameRate += ((1.0/(timeDiff/1000.0)) - frameRate)*0.8;
+                bitrate = 8 * encodedFrameSize * frameRate / 1000.0;
+                lastReceiveTime = ofGetElapsedTimeMillis();
+                
+                
                 frameNum++;
-            } else if (result < 0) {
+            } else {
                 
                 cout<<"No frame decoded result is:"<<ofToString(result)<<endl;
-                
-                // there was an error
-                // todo: handle it
             }
         }
         av_free_packet(&packet);
         av_init_packet(&packet);
         
     } else {
-        cout<<"No new frame or error statuscode is: "<<ofToString(readStatus)<<endl;
+        cout<<"EOF or error statuscode is: "<<ofToString(readStatus)<<endl;
     }
     
 }
