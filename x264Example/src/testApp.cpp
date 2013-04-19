@@ -4,7 +4,8 @@
 void testApp::setup(){
     ofLogLevel(OF_LOG_WARNING);
     
-    x264Encoder.setup(640, 480, "127.0.0.1", 1234);
+//    x264Encoder.setup(640, 480, "jive.local", 1234);
+    x264Encoder.setup(640, 480);
     
     data = (unsigned char*) malloc(sizeof(char)* 640 * 480 * 3*10);
     
