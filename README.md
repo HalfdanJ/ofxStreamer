@@ -10,8 +10,15 @@ Install ffmpeg wth x264 eg. using brew
 ### Adding to another project
 Copy the folder to addons, remove example
 
+WRONG:
+
 	in other linker flags add "$(SRCROOT)/../libs/osx/libx264.a"  (or just drag the file into other linker flags)
 	in Header Search Path add "/usr/local/include"	
+
+
+### Save the stream
+
+	$ ./ffmpeg -i "udp://@:1234" -vcodec libx264 output.mp4 
 
 
 ### Compilaton notes
