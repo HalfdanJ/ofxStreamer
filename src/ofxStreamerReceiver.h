@@ -31,62 +31,44 @@ class ofxStreamerReceiver {
     
 public:
     ofxStreamerReceiver();
-    
     bool connected;
-    
     bool allocated;
     bool bHavePixelsChanged;
-    
     int width;
     int height;
-    
     int port;
     std::string host;
         
     bool setup(int port, std::string host="udp://@");
-    
     void update();
     bool isFrameNew();
-    
     void draw(float x, float y);
     void draw(float x, float y, float w, float h);
     void draw(const ofPoint &p);
     void draw(const ofRectangle &r);
-    
     void close();
-    
     ofTexture getTextureReference();
     unsigned char * getPixels();
-    
+    ofPixelsRef getPixelsRef();
     float getHeight();
     float getWidth();
-    
-    bool isPlaying();
-    
-    
+    bool isConnected();
     
 private:
-    
-    struct AVFormatContext* avctx;
-    struct x264_t* encoder;
     struct SwsContext* imgctx;
     
     AVFormatContext* context;
     AVCodecContext* ccontext;
     SwsContext* img_convert_ctx;
-    
-    int video_stream_index;
-    
-    AVPacket packet;
-    
-    AVStream* stream;
-    int cnt;
     AVFormatContext* oc;
     AVFrame* pic;
     AVFrame* picrgb;
     uint8_t* picture_buf2;
     uint8_t* picture_buf;
-    
+    AVPacket packet;
+    AVStream* stream;
+    int video_stream_index;
+    long frameNum;
     ofImage * lastFrame;
     
 };

@@ -2,6 +2,7 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
+    ofSetWindowTitle("Sender");
     ofLogLevel(OF_LOG_WARNING);
     
     sender.setup(640, 480, "jive.local", 1234);
@@ -19,24 +20,7 @@ void testApp::setup(){
 void testApp::update(){
     grabber.update();
     
-    
     if(grabber.isFrameNew()){
-
-        ofLogLevel(OF_LOG_WARNING);
-        
-        int i=0;
-        for(int y=0;y<480;y++){
-            for(int x=0;x<640;x++){
-                data[i*3] = 255*x/640.0;
-                data[i*3+1] = (sin((x+ofGetFrameNum()*5)/60.0)+1)*100;
-                data[i*3+2] = 255*y/480.0;
-                i++;
-            }
-        }
-        
-        //    cout<<ofGetFrameRate()<<endl;
-        
-        
         
         ofBuffer buffer;
         buffer.set((char*)data, 640 * 480 * 3);

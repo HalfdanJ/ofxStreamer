@@ -2,10 +2,9 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
+    ofSetWindowTitle("Receiver");
     ofLogLevel(OF_LOG_WARNING);
-    
     receiver.setup(1234);
-    
 }
 
 //--------------------------------------------------------------
@@ -16,8 +15,14 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
     ofBackground(0,0,0);
+    
+    if(receiver.isFrameNew()) {
+        receiver.draw(0, 0);
+    }
+}
 
-    receiver.draw(0, 0);
+void testApp::exit(){
+    receiver.close();
 }
 
 //--------------------------------------------------------------

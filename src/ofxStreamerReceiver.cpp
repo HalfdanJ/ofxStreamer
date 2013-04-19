@@ -12,11 +12,9 @@
 using namespace std;
 
 ofxStreamerReceiver::ofxStreamerReceiver(){
-    
     bHavePixelsChanged = false;
     allocated = false;
     connected = false;
-        
 }
 
 bool ofxStreamerReceiver::setup(int _port, string _host) {
@@ -50,8 +48,8 @@ bool ofxStreamerReceiver::setup(int _port, string _host) {
     
     oc = avformat_alloc_context();
     
-    stream=NULL;
-    cnt = 0;
+    stream = NULL;
+    frameNum = 0;
     
     //start reading packets from stream and write them to file
     av_read_play(context);
@@ -76,6 +74,7 @@ bool ofxStreamerReceiver::setup(int _port, string _host) {
     
     lastFrame = new ofImage();
     lastFrame->allocate(width, height, OF_IMAGE_COLOR);
+    allocated = true;
     
     img_convert_ctx = sws_getContext(width, height, ccontext->pix_fmt, width, height,
                                      PIX_FMT_RGB24, SWS_BICUBIC, NULL, NULL, NULL);
@@ -94,34 +93,51 @@ bool ofxStreamerReceiver::setup(int _port, string _host) {
 }
 
 void ofxStreamerReceiver::update() {
+    int readStatus = av_read_frame(context,&packet);
     
-    if (av_read_frame(context,&packet)>=0 ) {
-
-        cout << "1 Frame: " << cnt << endl;
-        if(packet.stream_index == video_stream_index){//packet is video
-            cout << "2 Is Video" << endl;
-            if(stream == NULL)
-            {//create stream in file
-                cout << "3 create stream" << endl;
+    if (readStatus == 0) {
+        
+        cout<<packet.data<<endl;
+        
+        if(packet.stream_index == video_stream_index){ //packet is video
+            
+            if(stream == NULL) {
+                // create stream
                 stream = avformat_new_stream(oc,context->streams[video_stream_index]->codec->codec);
                 avcodec_copy_context(stream->codec,context->streams[video_stream_index]->codec);
                 stream->sample_aspect_ratio = context->streams[video_stream_index]->codec->sample_aspect_ratio;
             }
             int check = 0;
             packet.stream_index = stream->id;
-            cout << "4 decoding" << endl;
+            
+            // decode
             int result = avcodec_decode_video2(ccontext, pic, &check, &packet);
-            cout << "Bytes decoded " << result << " check " << check << endl;
             
-            //if(cnt > 100) {
-            sws_scale(img_convert_ctx, pic->data, pic->linesize, 0, ccontext->height, picrgb->data, picrgb->linesize);
+            cout<<pic->data<<endl;
+            cout<<pic->linesize<<endl;
             
-            lastFrame->setFromPixels(picrgb->data[0], width, height, OF_IMAGE_COLOR);
+            if(result > 0) {
+                bHavePixelsChanged = true;
+                
+                sws_scale(img_convert_ctx, pic->data, pic->linesize, 0, ccontext->height, picrgb->data, picrgb->linesize);
             
-            cnt++;
+                // save frame to image
+                lastFrame->setFromPixels(picrgb->data[0], width, height, OF_IMAGE_COLOR);
+            
+                frameNum++;
+            } else if (result < 0) {
+                
+                cout<<"No frame decoded result is:"<<ofToString(result)<<endl;
+                
+                // there was an error
+                // todo: handle it
+            }
         }
         av_free_packet(&packet);
         av_init_packet(&packet);
+        
+    } else {
+        cout<<"No new frame or error statuscode is: "<<ofToString(readStatus)<<endl;
     }
     
 }
@@ -138,27 +154,36 @@ void ofxStreamerReceiver::draw(const ofRectangle &r) {
     draw(r.x, r.y, r.width, r.height);
 }
 
+void ofxStreamerReceiver::draw(float x, float y, float w, float h) {
+    bHavePixelsChanged = false;
+    lastFrame->draw(x,y,w,h);
+}
+
 unsigned char * ofxStreamerReceiver::getPixels() {
     return lastFrame->getPixels();
 }
 
-void ofxStreamerReceiver::draw(float x, float y, float w, float h) {
-    lastFrame->draw(x,y,w,h);
+ofPixelsRef ofxStreamerReceiver::getPixelsRef() {
+    return lastFrame->getPixelsRef();
 }
 
+ofTexture ofxStreamerReceiver::getTextureReference() {
+    return lastFrame->getTextureReference();
+}
 
 bool ofxStreamerReceiver::isFrameNew() {
     return (bHavePixelsChanged);
 }
 
 void ofxStreamerReceiver::close() {
+    delete lastFrame;
     av_free(pic);
     av_free(picrgb);
     av_free(picture_buf);
     av_free(picture_buf2);
     av_read_pause(context);
-    avio_close(oc->pb);
     avformat_free_context(oc);
+    allocated = false;
 }
 
 float ofxStreamerReceiver::getWidth() {
