@@ -42,7 +42,6 @@ void testApp::draw(){
     ofDrawBitmapString("bitrate: "+ofToString(receiver.bitrate)+" kbits/s", 650, y+=15);
     ofDrawBitmapString("URL: "+receiver.url, 650, y+=35);
     
-    
 }
 
 void testApp::exit(){

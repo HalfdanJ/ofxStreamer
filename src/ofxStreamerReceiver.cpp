@@ -93,11 +93,12 @@ bool ofxStreamerReceiver::setup(int _port, string _host) {
 }
 
 void ofxStreamerReceiver::update() {
+    
+    
+    
     int readStatus = av_read_frame(context,&packet);
     
     if (readStatus == 0) {
-        
-        cout<<packet.data<<endl;
         
         if(packet.stream_index == video_stream_index){ //packet is video
             
@@ -107,15 +108,14 @@ void ofxStreamerReceiver::update() {
                 avcodec_copy_context(stream->codec,context->streams[video_stream_index]->codec);
                 stream->sample_aspect_ratio = context->streams[video_stream_index]->codec->sample_aspect_ratio;
             }
-            int check = 0;
             packet.stream_index = stream->id;
-            
             encodedFrameSize = packet.size;
             
             // decode
-            int result = avcodec_decode_video2(ccontext, pic, &check, &packet);            
+            int frameFinished = 0;
+            int result = avcodec_decode_video2(ccontext, pic, &frameFinished, &packet);
             
-            if(result > 0 && check == 1) {
+            if(result > 0 && frameFinished == 1) {
                 bHavePixelsChanged = true;
                 
                 sws_scale(img_convert_ctx, pic->data, pic->linesize, 0, ccontext->height, picrgb->data, picrgb->linesize);
@@ -127,11 +127,8 @@ void ofxStreamerReceiver::update() {
                 frameRate += ((1.0/(timeDiff/1000.0)) - frameRate)*0.8;
                 bitrate = 8 * encodedFrameSize * frameRate / 1000.0;
                 lastReceiveTime = ofGetElapsedTimeMillis();
-                
-                
                 frameNum++;
             } else {
-                
                 cout<<"No frame decoded result is:"<<ofToString(result)<<endl;
             }
         }
@@ -141,7 +138,6 @@ void ofxStreamerReceiver::update() {
     } else {
         cout<<"EOF or error statuscode is: "<<ofToString(readStatus)<<endl;
     }
-    
 }
 
 void ofxStreamerReceiver::draw(const ofPoint &p) {
