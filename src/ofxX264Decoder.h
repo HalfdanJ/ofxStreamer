@@ -8,6 +8,10 @@
 
 #pragma once
 
+#define 	FF_INPUT_BUFFER_PADDING_SIZE   16
+#define     INBUF_SIZE 4096
+
+#include <ofMain.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
@@ -22,39 +26,67 @@ extern "C"
 #include <libswscale/swscale.h>
 }
 
-
-#define 	FF_INPUT_BUFFER_PADDING_SIZE   16
-#define     INBUF_SIZE 4096
-
-
 class ofxX264Decoder {
-    
     
 public:
     ofxX264Decoder();
     
+    bool connected;
     
-    static int decode_write_frame(const char *outfilename, AVCodecContext *avctx,
-                                  AVFrame *frame, int *frame_count, AVPacket *pkt, int last);
+    bool allocated;
+    bool bHavePixelsChanged;
     
-    static void video_decode_example(const char *outfilename, const char *filename);
+    int width;
+    int height;
     
-    static void pgm_save(unsigned char *buf, int wrap, int xsize, int ysize,
-                         char *filename);
+    int port;
+    std::string host;
+        
+    bool setup(int port, std::string host="udp://@");
     
-    bool decodeData(const char * data, int data_length);
+    void update();
+    bool isFrameNew();
+    
+    void draw(float x, float y);
+    void draw(float x, float y, float w, float h);
+    void draw(const ofPoint &p);
+    void draw(const ofRectangle &r);
+    
+    void close();
+    
+    ofTexture getTextureReference();
+    unsigned char * getPixels();
+    
+    float getHeight();
+    float getWidth();
+    
+    bool isPlaying();
+    
+    
+    
+private:
     
     struct AVFormatContext* avctx;
     struct x264_t* encoder;
     struct SwsContext* imgctx;
     
+    AVFormatContext* context;
+    AVCodecContext* ccontext;
+    SwsContext* img_convert_ctx;
     
-    // new example
-    void log_callback(void *ptr, int level, const char *fmt, va_list vargs);
-
+    int video_stream_index;
     
+    AVPacket packet;
     
+    AVStream* stream;
+    int cnt;
+    AVFormatContext* oc;
+    AVFrame* pic;
+    AVFrame* picrgb;
+    uint8_t* picture_buf2;
+    uint8_t* picture_buf;
     
+    ofImage * lastFrame;
     
 };
 
