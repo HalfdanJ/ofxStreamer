@@ -19,6 +19,17 @@ void testApp::draw(){
     if(receiver.isFrameNew()) {
         receiver.draw(0, 0);
     }
+    
+    int y = 15;
+    int x = 650;
+    
+    ofDrawBitmapString("Streamer Receiver Example", 650, y);
+    ofDrawBitmapString("Frame Num: \t\t"+ofToString(receiver.frameNum), 650, y+=20);
+    ofDrawBitmapString("Frame Rate: "+ofToString(receiver.frameRate,1)+" fps", 650, y+=15);
+    ofDrawBitmapString("bitrate: "+ofToString(receiver.bitrate)+" kbits/s", 650, y+=15);
+    ofDrawBitmapString("URL: "+receiver.url, 650, y+=35);
+    
+    
 }
 
 void testApp::exit(){
