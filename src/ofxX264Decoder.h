@@ -41,9 +41,7 @@ public:
     
     int port;
     std::string host;
-    
-    unsigned char * pixels;
-    
+        
     bool setup(int port, std::string host="udp://@");
     
     void update();
@@ -76,7 +74,6 @@ private:
     AVCodecContext* ccontext;
     SwsContext* img_convert_ctx;
     
-    
     int video_stream_index;
     
     AVPacket packet;
@@ -86,6 +83,11 @@ private:
     AVFormatContext* oc;
     AVFrame* pic;
     AVFrame* picrgb;
+    uint8_t* picture_buf2;
+    uint8_t* picture_buf;
+    
+    ofImage * lastFrame;
+    
 };
 
 

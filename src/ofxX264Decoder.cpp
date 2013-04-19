@@ -74,15 +74,18 @@ bool ofxX264Decoder::setup(int _port, string _host) {
     width = ccontext->width;
     height = ccontext->height;
     
+    lastFrame = new ofImage();
+    lastFrame->allocate(width, height, OF_IMAGE_COLOR);
+    
     img_convert_ctx = sws_getContext(width, height, ccontext->pix_fmt, width, height,
                                      PIX_FMT_RGB24, SWS_BICUBIC, NULL, NULL, NULL);
     
     int size = avpicture_get_size(PIX_FMT_YUV420P, width, height);
-    uint8_t* picture_buf = (uint8_t*)(av_malloc(size));
+    picture_buf = (uint8_t*)(av_malloc(size));
     pic = avcodec_alloc_frame();
     picrgb = avcodec_alloc_frame();
     int size2 = avpicture_get_size(PIX_FMT_RGB24, width, height);
-    uint8_t* picture_buf2 = (uint8_t*)(av_malloc(size2));
+    picture_buf2 = (uint8_t*)(av_malloc(size2));
     avpicture_fill((AVPicture *
                     ) pic, picture_buf, PIX_FMT_YUV420P, width, height);
     avpicture_fill((AVPicture *) picrgb, picture_buf2, PIX_FMT_RGB24, width, height);
@@ -92,7 +95,7 @@ bool ofxX264Decoder::setup(int _port, string _host) {
 
 void ofxX264Decoder::update() {
     
-    if (av_read_frame(context,&packet)) {
+    if (av_read_frame(context,&packet)>=0 ) {
 
         cout << "1 Frame: " << cnt << endl;
         if(packet.stream_index == video_stream_index){//packet is video
@@ -110,16 +113,10 @@ void ofxX264Decoder::update() {
             int result = avcodec_decode_video2(ccontext, pic, &check, &packet);
             cout << "Bytes decoded " << result << " check " << check << endl;
             
-            if(cnt > 100) {
-                sws_scale(img_convert_ctx, pic->data, pic->linesize, 0, ccontext->height, picrgb->data, picrgb->linesize);
-                
-                for(int y = 0; y < ccontext->height; y++)
-                {
-                    for(int x = 0; x < width * 3; x++) {
-                        //myfile << (int)(picrgb->data[0] + y * picrgb->linesize[0])[x] << " ";
-                    }
-                }
-            }
+            //if(cnt > 100) {
+            sws_scale(img_convert_ctx, pic->data, pic->linesize, 0, ccontext->height, picrgb->data, picrgb->linesize);
+            
+            lastFrame->setFromPixels(picrgb->data[0], width, height, OF_IMAGE_COLOR);
             
             cnt++;
         }
@@ -141,25 +138,27 @@ void ofxX264Decoder::draw(const ofRectangle &r) {
     draw(r.x, r.y, r.width, r.height);
 }
 
-void ofxX264Decoder::draw(float x, float y, float w, float h) {
-    
-    
-    
+unsigned char * ofxX264Decoder::getPixels() {
+    return lastFrame->getPixels();
 }
+
+void ofxX264Decoder::draw(float x, float y, float w, float h) {
+    lastFrame->draw(x,y,w,h);
+}
+
 
 bool ofxX264Decoder::isFrameNew() {
     return (bHavePixelsChanged);
 }
 
 void ofxX264Decoder::close() {
-    /*av_free(pic);
+    av_free(pic);
     av_free(picrgb);
     av_free(picture_buf);
     av_free(picture_buf2);
-    
     av_read_pause(context);
     avio_close(oc->pb);
-    avformat_free_context(oc);*/
+    avformat_free_context(oc);
 }
 
 float ofxX264Decoder::getWidth() {
