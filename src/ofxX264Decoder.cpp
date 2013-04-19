@@ -15,12 +15,125 @@ ofxX264Decoder::ofxX264Decoder(){
     //FILE* pFile;
     //pFile = fopen("/Users/johan/Desktop/file.h264", "w");
     
-    video_decode_example("/Users/johan/Desktop/file.h264", "test.mpg");
+    //avcodec_register_all();
+    //video_decode_example("test%02d.pgm", "http://59.124.145.72:57282");
+    
     // initialize decoder
     
     // decode
     
     // draw
+    
+    SwsContext *img_convert_ctx;
+    AVFormatContext* context = avformat_alloc_context();
+    AVCodecContext* ccontext = avcodec_alloc_context3(NULL);
+    int video_stream_index;
+    
+    av_register_all();
+    avformat_network_init();
+    //av_log_set_callback(&log_callback);
+    
+    //open rtsp
+    if(avformat_open_input(&context, "rtsp://134.169.178.187:8554/h264.3gp",NULL,NULL) != 0){
+        return EXIT_FAILURE;
+    }
+    
+    if(avformat_find_stream_info(context,NULL) < 0){
+        return EXIT_FAILURE;
+    }
+    
+    //search video stream
+    for(int i =0;i<context->nb_streams;i++){
+        if(context->streams[i]->codec->codec_type == AVMEDIA_TYPE_VIDEO)
+            video_stream_index = i;
+    }
+    
+    AVPacket packet;
+    av_init_packet(&packet);
+    
+    //open output file
+    //AVOutputFormat* fmt = av_guess_format(NULL,"test2.mp4",NULL);
+    AVFormatContext* oc = avformat_alloc_context();
+    //oc->oformat = fmt;
+    //avio_open2(&oc->pb, "test.mp4", AVIO_FLAG_WRITE,NULL,NULL);
+    
+    AVStream* stream=NULL;
+    int cnt = 0;
+    //start reading packets from stream and write them to file
+    av_read_play(context);//play RTSP
+    
+    AVCodec *codec = NULL;
+    codec = avcodec_find_decoder(CODEC_ID_H264);
+    if (!codec) exit(1);
+    
+    avcodec_get_context_defaults3(ccontext, codec);
+    avcodec_copy_context(ccontext,context->streams[video_stream_index]->codec);
+    std::ofstream myfile;
+    
+    if (avcodec_open2(ccontext, codec, NULL) < 0) exit(1);
+    
+    img_convert_ctx = sws_getContext(ccontext->width, ccontext->height, ccontext->pix_fmt, ccontext->width, ccontext->height,
+                                     PIX_FMT_RGB24, SWS_BICUBIC, NULL, NULL, NULL);
+    
+    int size = avpicture_get_size(PIX_FMT_YUV420P, ccontext->width, ccontext->height);
+    uint8_t* picture_buf = (uint8_t*)(av_malloc(size));
+    AVFrame* pic = avcodec_alloc_frame();
+    AVFrame* picrgb = avcodec_alloc_frame();
+    int size2 = avpicture_get_size(PIX_FMT_RGB24, ccontext->width, ccontext->height);
+    uint8_t* picture_buf2 = (uint8_t*)(av_malloc(size2));
+    avpicture_fill((AVPicture *) pic, picture_buf, PIX_FMT_YUV420P, ccontext->width, ccontext->height);
+    avpicture_fill((AVPicture *) picrgb, picture_buf2, PIX_FMT_RGB24, ccontext->width, ccontext->height);
+    
+    while(av_read_frame(context,&packet)>=0 && cnt <1000)
+    {//read 100 frames
+        
+        std::cout << "1 Frame: " << cnt << std::endl;
+        if(packet.stream_index == video_stream_index){//packet is video
+            std::cout << "2 Is Video" << std::endl;
+            if(stream == NULL)
+            {//create stream in file
+                std::cout << "3 create stream" << std::endl;
+                stream = avformat_new_stream(oc,context->streams[video_stream_index]->codec->codec);
+                avcodec_copy_context(stream->codec,context->streams[video_stream_index]->codec);
+                stream->sample_aspect_ratio = context->streams[video_stream_index]->codec->sample_aspect_ratio;
+            }
+            int check = 0;
+            packet.stream_index = stream->id;
+            std::cout << "4 decoding" << std::endl;
+            int result = avcodec_decode_video2(ccontext, pic, &check, &packet);
+            std::cout << "Bytes decoded " << result << " check " << check << std::endl;
+            if(cnt > 100)//cnt < 0)
+            {
+                sws_scale(img_convert_ctx, pic->data, pic->linesize, 0, ccontext->height, picrgb->data, picrgb->linesize);
+                std::stringstream name;
+                name << "test" << cnt << ".ppm";
+                
+                myfile.open(name.str().c_str());
+                myfile << "P3 " << ccontext->width << " " << ccontext->height << " 255\n";
+                for(int y = 0; y < ccontext->height; y++)
+                {
+                    for(int x = 0; x < ccontext->width * 3; x++)
+                        myfile << (int)(picrgb->data[0] + y * picrgb->linesize[0])[x] << " ";
+                }
+                myfile.close();
+            }
+            cnt++;
+        }
+        av_free_packet(&packet);
+        av_init_packet(&packet);
+    }
+    av_free(pic);
+    av_free(picrgb);
+    av_free(picture_buf);
+    av_free(picture_buf2);
+    
+    av_read_pause(context);
+    avio_close(oc->pb);
+    avformat_free_context(oc);
+    
+    return (EXIT_SUCCESS);
+    
+    
     
 }
 
@@ -35,6 +148,26 @@ void ofxX264Decoder::pgm_save(unsigned char *buf, int wrap, int xsize, int ysize
         fwrite(buf + i * wrap,1,xsize,f);
     fclose(f);
 }
+
+
+
+void ofxX264Decoder::log_callback(void *ptr, int level, const char *fmt, va_list vargs)
+{
+    static char message[8192];
+    const char *module = NULL;
+    
+    if (ptr)
+    {
+        AVClass *avc = *(AVClass**) ptr;
+        module = avc->item_name(ptr);
+    }
+    vsnprintf(message, sizeof(message), fmt, vargs);
+    
+    std::cout << "LOG: " << message << std::endl;
+}
+
+
+
 
 int ofxX264Decoder::decode_write_frame(const char *outfilename, AVCodecContext *avctx,
                               AVFrame *frame, int *frame_count, AVPacket *pkt, int last)
@@ -65,7 +198,7 @@ int ofxX264Decoder::decode_write_frame(const char *outfilename, AVCodecContext *
 }
 
 
-void ofxX264Decoder::video_decode_example(const char *outfilename, const char *filename)
+/*void ofxX264Decoder::video_decode_example(const char *outfilename, const char *filename)
 {
     AVCodec *codec;
     AVCodecContext *c= NULL;
@@ -76,10 +209,10 @@ void ofxX264Decoder::video_decode_example(const char *outfilename, const char *f
     AVPacket avpkt;
     av_init_packet(&avpkt);
     /* set end of buffer to 0 (this ensures that no overreading happens for damaged mpeg streams) */
-    memset(inbuf + INBUF_SIZE, 0, FF_INPUT_BUFFER_PADDING_SIZE);
-    printf("Decode video file %s to %s\n", filename, outfilename);
+    /*memset(inbuf + INBUF_SIZE, 0, FF_INPUT_BUFFER_PADDING_SIZE);
+    printf("Decode video file %s to %s\n", filename, outfilename);/*
     /* find the mpeg1 video decoder */
-    codec = avcodec_find_decoder(AV_CODEC_ID_MPEG1VIDEO);
+    /*codec = avcodec_find_decoder(AV_CODEC_ID_MPEG1VIDEO);
     if (!codec) {
         fprintf(stderr, "Codec not found\n");
         exit(1);
@@ -90,11 +223,11 @@ void ofxX264Decoder::video_decode_example(const char *outfilename, const char *f
         exit(1);
     }
     if(codec->capabilities&CODEC_CAP_TRUNCATED)
-        c->flags|= CODEC_FLAG_TRUNCATED; /* we do not send complete frames */
+        c->flags|= CODEC_FLAG_TRUNCATED;*/ /* we do not send complete frames */
     /* For some codecs, such as msmpeg4 and mpeg4, width and height
      MUST be initialized there because this information is not
      available in the bitstream. */
-    /* open it */
+    /* open it *//*
     if (avcodec_open2(c, codec, NULL) < 0) {
         fprintf(stderr, "Could not open codec\n");
         exit(1);
@@ -113,7 +246,7 @@ void ofxX264Decoder::video_decode_example(const char *outfilename, const char *f
     for(;;) {
         avpkt.size = fread(inbuf, 1, INBUF_SIZE, f);
         if (avpkt.size == 0)
-            break;
+            break;*/
         /* NOTE1: some codecs are stream based (mpegvideo, mpegaudio)
          and this is the only method to use them because you cannot
          know the compressed data size before analysing it.
@@ -126,15 +259,15 @@ void ofxX264Decoder::video_decode_example(const char *outfilename, const char *f
          you should also take care of it */
         /* here, we use a stream based decoder (mpeg1video), so we
          feed decoder and see if it could decode a frame */
-        avpkt.data = inbuf;
+        /*avpkt.data = inbuf;
         while (avpkt.size > 0)
             if (decode_write_frame(outfilename, c, frame, &frame_count, &avpkt, 0) < 0)
                 exit(1);
-    }
+    }*/
     /* some codecs, such as MPEG, transmit the I and P frame with a
      latency of one frame. You must do the following to have a
      chance to get the last frame of the video */
-    avpkt.data = NULL;
+    /*avpkt.data = NULL;
     avpkt.size = 0;
     decode_write_frame(outfilename, c, frame, &frame_count, &avpkt, 1);
     fclose(f);
@@ -142,5 +275,5 @@ void ofxX264Decoder::video_decode_example(const char *outfilename, const char *f
     av_free(c);
     avcodec_free_frame(&frame);
     printf("\n");
-}
+}*/
 

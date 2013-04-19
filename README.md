@@ -17,3 +17,8 @@ Copy the folder to addons, remove example
 
 
 
+### Compilaton notes
+
+libiconv
+
+    $ brew install libiconv --universal

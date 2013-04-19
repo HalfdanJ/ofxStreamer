@@ -9,29 +9,23 @@
 #pragma once
 
 
-
 #include <stdio.h>
-#include <stdint.h>
-#include <unistd.h>
-#include <vector.h>
+#include <stdlib.h>
+#include <iostream>
+#include <fstream>
+#include <sstream>
 
-extern "C" {
-#include <x264.h>
+extern "C"
+{
+#include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
+#include <libavformat/avio.h>
 #include <libswscale/swscale.h>
 }
 
-#define WIDTH       640
-#define HEIGHT      480
-#define FPS         30
-#define BITRATE     400000
-#define RTP_ADDRESS "127.0.0.1"
-#define RTP_PORT    49990
 
-
-#define INBUF_SIZE 4096
-#define AUDIO_INBUF_SIZE 20480
-#define AUDIO_REFILL_THRESH 4096
+#define 	FF_INPUT_BUFFER_PADDING_SIZE   16
+#define     INBUF_SIZE 4096
 
 
 class ofxX264Decoder {
@@ -54,6 +48,14 @@ public:
     struct AVFormatContext* avctx;
     struct x264_t* encoder;
     struct SwsContext* imgctx;
+    
+    
+    // new example
+    void log_callback(void *ptr, int level, const char *fmt, va_list vargs);
+
+    
+    
+    
     
 };
 
