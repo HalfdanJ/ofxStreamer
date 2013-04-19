@@ -50,3 +50,6 @@ x264
 	$ ./configure  --host=i686-apple-darwin11.1.0 --extra-cflags="-arch i386" --extra-ldflags="-arch i386" --disable-asm
 	$ make
 
+### Testing
+List of RTSP streams for testing of the decoder: http://www.vlc.eu.pn/
+
