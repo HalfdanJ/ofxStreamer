@@ -95,7 +95,7 @@ bool ofxStreamerReceiver::setup(int _port, string _host) {
 void ofxStreamerReceiver::update() {
     
     
-    
+
     int readStatus = av_read_frame(context,&packet);
     
     if (readStatus == 0) {
@@ -113,11 +113,19 @@ void ofxStreamerReceiver::update() {
             
             // decode
             int frameFinished = 0;
+
             int result = avcodec_decode_video2(ccontext, pic, &frameFinished, &packet);
+             result = avcodec_decode_video2(ccontext, pic, &frameFinished, &packet);
+             result = avcodec_decode_video2(ccontext, pic, &frameFinished, &packet);
+             result = avcodec_decode_video2(ccontext, pic, &frameFinished, &packet);
+            result = avcodec_decode_video2(ccontext, pic, &frameFinished, &packet);
+            result = avcodec_decode_video2(ccontext, pic, &frameFinished, &packet);
+            result = avcodec_decode_video2(ccontext, pic, &frameFinished, &packet);
+            result = avcodec_decode_video2(ccontext, pic, &frameFinished, &packet);
+            result = avcodec_decode_video2(ccontext, pic, &frameFinished, &packet);
             
             if(result > 0 && frameFinished == 1) {
                 bHavePixelsChanged = true;
-                
                 sws_scale(img_convert_ctx, pic->data, pic->linesize, 0, ccontext->height, picrgb->data, picrgb->linesize);
             
                 // save frame to image
