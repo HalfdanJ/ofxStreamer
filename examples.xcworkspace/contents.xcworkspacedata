@@ -2,9 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:receiverExample/streamerReceiverExample.xcodeproj">
+      location = "group:senderExample/streamerSenderExample.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:senderExample/streamerSenderExample.xcodeproj">
+      location = "group:receiverExample/streamerReceiverExample.xcodeproj">
    </FileRef>
 </Workspace>

@@ -122,7 +122,7 @@ void ofxStreamerSender::setup(int _width, int _height, string destination_ip, in
     }
     
     
-    
+   
     // initalize codec
     AVCodecContext* c = stream->codec;
     c->codec_id = CODEC_ID_H264;

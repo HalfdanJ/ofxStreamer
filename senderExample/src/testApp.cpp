@@ -42,7 +42,7 @@ void testApp::update(){
         sender.sendFrame();
         
     }
-     //   else if(grabber.isFrameNew()){
+    else if(grabber.isFrameNew()){
         
         ofBuffer buffer;
         buffer.set((char*)data, 640 * 480 * 3);
@@ -53,7 +53,7 @@ void testApp::update(){
         //    x264Encoder.encodeFrame(data, 640 * 480 * 3);
         
         sender.sendFrame();
-   //}
+   }
     
     
     
