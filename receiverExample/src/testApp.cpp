@@ -22,16 +22,16 @@ void testApp::update(){
 void testApp::draw(){
     ofBackgroundGradient(ofColor(28,78,28), ofColor(14,25,14),OF_GRADIENT_LINEAR);
     
-    if(receiver.isFrameNew()) {
+   // if(receiver.isFrameNew()) {
         receiver.draw(0, 0);
         
-        if(receiver.getPixels()[0] == 255){
+      /*  if(receiver.getPixels()[0] == 255){
             ofxOscMessage msg;
             msg.setAddress("/streamer/hello");
             oscSender.sendMessage(msg);
 
-        }
-    }
+        }*/
+   // }
     
     int y = 15;
     int x = 650;

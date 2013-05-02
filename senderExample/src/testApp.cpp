@@ -16,7 +16,7 @@ void testApp::setup(){
     grabber.initGrabber(640, 480);
     
     
-    oscReceiver.setup(9999);
+    //oscReceiver.setup(9999);
     
     
     latency = 0;
@@ -57,7 +57,7 @@ void testApp::update(){
     
     
     
-    if(oscReceiver.hasWaitingMessages()){
+   /* if(oscReceiver.hasWaitingMessages()){
         ofxOscMessage msg;
         oscReceiver.getNextMessage(&msg);
         
@@ -66,7 +66,7 @@ void testApp::update(){
         latency = ofGetElapsedTimeMillis() -  sendPingTime;
         
         cout<<"Diff "<<latency<<endl;
-    }
+    }*/
 
 }
 

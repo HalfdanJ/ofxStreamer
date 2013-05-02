@@ -27,7 +27,7 @@ extern "C"
 #include <libswscale/swscale.h>
 }
 
-class ofxStreamerReceiver {
+class ofxStreamerReceiver : ofThread {
     
 public:
     ofxStreamerReceiver();
@@ -76,6 +76,17 @@ private:
     
     ofImage * lastFrame;
     int encodedFrameSize;
+    
+    void threadedFunction();
+    
+    bool newFrame;
+    
+    unsigned char * pixelData;
+    
+  //  pthread_mutex_t mutex;
+    ofMutex mutex;
+
+    
     
 };
 
