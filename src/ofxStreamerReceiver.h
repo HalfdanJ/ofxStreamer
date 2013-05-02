@@ -83,6 +83,10 @@ private:
     
     unsigned char * pixelData;
     
+  //  pthread_mutex_t mutex;
+    ofMutex mutex;
+
+    
     
 };
 

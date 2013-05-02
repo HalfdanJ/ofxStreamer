@@ -24,16 +24,17 @@ bool ofxStreamerReceiver::setup(int _port, string _host) {
     ofLog(OF_LOG_NOTICE, "Opening stream at " + url);
     
     
-    startThread(true,false);
-
-
+    
+    
+    startThread(false,false);
+    
+    
     
     return connected = true;
 }
 
 
 void ofxStreamerReceiver::threadedFunction(){
-  
     context = avformat_alloc_context();
     ccontext = avcodec_alloc_context3(NULL);
     
@@ -87,6 +88,10 @@ void ofxStreamerReceiver::threadedFunction(){
     
     pixelData = (unsigned char*)malloc(sizeof(unsigned char)*width*height*3);
     
+    for(int i=0;i<width*height*3;i++){
+        pixelData[i] = 0;
+    }
+    
     img_convert_ctx = sws_getContext(width, height, ccontext->pix_fmt, width, height,
                                      PIX_FMT_RGB24, SWS_BICUBIC, NULL, NULL, NULL);
     
@@ -102,18 +107,21 @@ void ofxStreamerReceiver::threadedFunction(){
     
     
     
-    while(1){
-        lock();
-        cout<<"Thread Lock"<<endl;
-
+    
+    
+    while(isThreadRunning()){
+        
         if(&packet){
             av_free_packet(&packet);
             av_init_packet(&packet);
         }
+        
+        
+        
         int readStatus = av_read_frame(context,&packet);
         
         if (readStatus == 0) {
-      
+                        
             if(packet.stream_index == video_stream_index){ //packet is video
                 
                 if(stream == NULL) {
@@ -130,63 +138,62 @@ void ofxStreamerReceiver::threadedFunction(){
                 int result = avcodec_decode_video2(ccontext, pic, &frameFinished, &packet);
                 
                 if(result > 0 && frameFinished == 1) {
-                    
-                    
+                    mutex.lock();
+
                     sws_scale(img_convert_ctx, pic->data, pic->linesize, 0, ccontext->height, picrgb->data, picrgb->linesize);
                     
-                    
-                    cout<<"Memcpu"<<endl;
-                    memcpy(pixelData,  picrgb->data[0], width*height*3);
                     newFrame = true;
                     
+                    mutex.unlock();
+
                 } else {
                     cout<<"No frame decoded result is:"<<ofToString(result)<<endl;
                 }
+                
             }
-            
         } else {
             cout<<"EOF or error statuscode is: "<<ofToString(readStatus)<<endl;
         }
         
-        cout<<"Thread unlock"<<endl;
-
-        unlock();
-
-
+        
+        
+        
+        
     }
+    
+    
 }
 
 void ofxStreamerReceiver::update() {
-    if(newFrame){
-        
-        if(!allocated){
-            lastFrame = new ofImage();
-            lastFrame->allocate(width, height, OF_IMAGE_COLOR);
-            allocated = true;
-            
-        }
-        
-        
-        lock(); {
-            if(newFrame){
-                
-                
-                // save frame to image
-                lastFrame->setFromPixels(pixelData, width, height, OF_IMAGE_COLOR);
-                cout<<int(pixelData[0])<<endl;
-                float timeDiff = ofGetElapsedTimeMillis() - lastReceiveTime;
-                frameRate += ((1.0/(timeDiff/1000.0)) - frameRate)*0.8;
-                bitrate = 8 * encodedFrameSize * frameRate / 1000.0;
-                lastReceiveTime = ofGetElapsedTimeMillis();
-                frameNum++;
-                
-                bHavePixelsChanged = true;
+    if(mutex.tryLock()){
+        if(newFrame){
+            if(!allocated){
+                lastFrame = new ofImage();
+                lastFrame->allocate(width, height, OF_IMAGE_COLOR);
+                allocated = true;
                 
             }
-        } unlock();
-        
-        newFrame=false;
-        
+            
+            
+            // save frame to image
+            lastFrame->setFromPixels(picrgb->data[0], width, height, OF_IMAGE_COLOR);
+            
+            
+            float timeDiff = ofGetElapsedTimeMillis() - lastReceiveTime;
+            frameRate += ((1.0/(timeDiff/1000.0)) - frameRate)*0.8;
+            bitrate = 8 * encodedFrameSize * frameRate / 1000.0;
+            lastReceiveTime = ofGetElapsedTimeMillis();
+            frameNum++;
+            
+            bHavePixelsChanged = true;
+            
+            newFrame=false;
+            
+            
+        }
+        mutex.unlock();
+    } else {
+      //  cout<<"Could not lock"<<endl;
     }
 }
 
@@ -206,6 +213,7 @@ void ofxStreamerReceiver::draw(float x, float y, float w, float h) {
     bHavePixelsChanged = false;
     if(allocated){
         lastFrame->draw(x,y,w,h);
+    } else {
     }
 }
 
