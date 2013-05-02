@@ -118,11 +118,6 @@ void ofxStreamerReceiver::update() {
              result = avcodec_decode_video2(ccontext, pic, &frameFinished, &packet);
              result = avcodec_decode_video2(ccontext, pic, &frameFinished, &packet);
              result = avcodec_decode_video2(ccontext, pic, &frameFinished, &packet);
-            result = avcodec_decode_video2(ccontext, pic, &frameFinished, &packet);
-            result = avcodec_decode_video2(ccontext, pic, &frameFinished, &packet);
-            result = avcodec_decode_video2(ccontext, pic, &frameFinished, &packet);
-            result = avcodec_decode_video2(ccontext, pic, &frameFinished, &packet);
-            result = avcodec_decode_video2(ccontext, pic, &frameFinished, &packet);
             
             if(result > 0 && frameFinished == 1) {
                 bHavePixelsChanged = true;
