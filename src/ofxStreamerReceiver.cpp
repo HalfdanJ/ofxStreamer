@@ -15,6 +15,7 @@ ofxStreamerReceiver::ofxStreamerReceiver(){
     bHavePixelsChanged = false;
     allocated = false;
     connected = false;
+    newFrame = false;
 }
 
 bool ofxStreamerReceiver::setup(int _port, string _host) {

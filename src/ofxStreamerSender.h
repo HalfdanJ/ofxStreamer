@@ -58,6 +58,8 @@ public:
     unsigned char * encodedFrameData;
     int encodedFrameSize;
     
+    bool streaming;
+    
 private:
     struct AVFormatContext* avctx;
     struct x264_t* encoder;

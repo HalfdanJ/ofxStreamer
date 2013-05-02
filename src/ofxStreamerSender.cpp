@@ -13,7 +13,7 @@
 
 
 ofxStreamerSender::ofxStreamerSender(){
-    
+    streaming = false;
 }
 
 
@@ -135,6 +135,8 @@ void ofxStreamerSender::setup(int _width, int _height, string destination_ip, in
     
     // write the header
     avformat_write_header(avctx, nil);
+    
+    streaming = true;
 }
 
 
@@ -149,27 +151,29 @@ bool ofxStreamerSender::encodeFrame(ofImage image){
     
     return encodeFrame(data, length);
 }
-	
+
 bool ofxStreamerSender::encodeFrame(unsigned char *data, int data_length){
-    encodedFrameSize = 0;
-    
-
-    int stride = width * 3;
-    
-    //Convert to YUV format
-    sws_scale(imgctx, (const uint8_t* const*) &data, &stride, 0, height, picture_in.img.plane, picture_in.img.i_stride);
-    
-    
-    //Encode h264 frame
-    x264_nal_t* nals;
-    int num_nals;
-
-    int frame_size = x264_encoder_encode(encoder, &nals, &num_nals, &picture_in, picture_out);
-    if (frame_size > 0)
-    {
-        encodedFrameData = (unsigned char*)nals[0].p_payload ;
-        encodedFrameSize = frame_size ;
-        return true;
+    if(streaming){
+        encodedFrameSize = 0;
+        
+        
+        int stride = width * 3;
+        
+        //Convert to YUV format
+        sws_scale(imgctx, (const uint8_t* const*) &data, &stride, 0, height, picture_in.img.plane, picture_in.img.i_stride);
+        
+        
+        //Encode h264 frame
+        x264_nal_t* nals;
+        int num_nals;
+        
+        int frame_size = x264_encoder_encode(encoder, &nals, &num_nals, &picture_in, picture_out);
+        if (frame_size > 0)
+        {
+            encodedFrameData = (unsigned char*)nals[0].p_payload ;
+            encodedFrameSize = frame_size ;
+            return true;
+        }
     }
 
     return false;
@@ -177,42 +181,45 @@ bool ofxStreamerSender::encodeFrame(unsigned char *data, int data_length){
 
 
 bool ofxStreamerSender::sendFrame(){
-    if(encodedFrameSize == 0){
-        ofLog(OF_LOG_WARNING, "No encoded frame to send, make sure to call encodeFrame");
-        return false;
+    if(streaming){
+        if(encodedFrameSize == 0){
+            ofLog(OF_LOG_WARNING, "No encoded frame to send, make sure to call encodeFrame");
+            return false;
+        }
+        
+        
+        AVCodecContext *codecContext = stream->codec;
+        
+        // initalize a packet
+        AVPacket p;
+        av_init_packet(&p);
+        p.data = encodedFrameData;
+        p.size = encodedFrameSize;
+        p.stream_index = codecContext->frame_number;
+        
+        
+        //   p.pts = int64_t(0x8000000000000000);
+        //  p.dts = int64_t(0x8000000000000000);
+        
+        /*    if(codecContext->coded_frame->key_frame)
+         p.flags |= AV_PKT_FLAG_KEY;
+         */
+        
+        frameNum++;
+        
+        float timeDiff = ofGetElapsedTimeMillis() - lastSendTime;
+        
+        frameRate += ((1.0/(timeDiff/1000.0)) - frameRate)*0.8;
+        
+        bitrate = 8 * encodedFrameSize * frameRate / 1000.0;
+        
+        
+        lastSendTime = ofGetElapsedTimeMillis();
+        
+        // send it out
+        return av_write_frame(avctx, &p);
     }
-       
-
-    AVCodecContext *codecContext = stream->codec;
-    
-    // initalize a packet
-    AVPacket p;
-    av_init_packet(&p);
-    p.data = encodedFrameData;
-    p.size = encodedFrameSize;
-    p.stream_index = codecContext->frame_number;
-    
-    
-    //   p.pts = int64_t(0x8000000000000000);
-    //  p.dts = int64_t(0x8000000000000000);
-    
-    /*    if(codecContext->coded_frame->key_frame)
-     p.flags |= AV_PKT_FLAG_KEY;
-     */
-    
-    frameNum++;
-    
-    float timeDiff = ofGetElapsedTimeMillis() - lastSendTime;
-    
-    frameRate += ((1.0/(timeDiff/1000.0)) - frameRate)*0.8;
-    
-    bitrate = 8 * encodedFrameSize * frameRate / 1000.0;
-    
-    
-    lastSendTime = ofGetElapsedTimeMillis();
-    
-    // send it out
-    return av_write_frame(avctx, &p);
+    return false;
 }
 
 
