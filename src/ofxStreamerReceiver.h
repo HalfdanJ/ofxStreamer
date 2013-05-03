@@ -31,60 +31,60 @@ class ofxStreamerReceiver : ofThread {
     
 public:
     ofxStreamerReceiver();
-    bool connected;
-    bool allocated;
-    bool bHavePixelsChanged;
-    int width;
-    int height;
-    int port;
-    std::string host;
-    std::string url;
+    bool            connected;
+    bool            allocated;
+    bool            bHavePixelsChanged;
+    int             width;
+    int             height;
+    int             port;
+    string          host;
+    string          url;
     
-    bool setup(int port, std::string host="udp://@");
-    void update();
-    bool isFrameNew();
-    void draw(float x, float y);
-    void draw(float x, float y, float w, float h);
-    void draw(const ofPoint &p);
-    void draw(const ofRectangle &r);
-    void close();
-    ofTexture getTextureReference();
+    bool            setup(int port, std::string host="udp://@");
+    void            update();
+    bool            isFrameNew();
+    void            draw(float x, float y);
+    void            draw(float x, float y, float w, float h);
+    void            draw(const ofPoint &p);
+    void            draw(const ofRectangle &r);
+    void            close();
+    ofTexture &     getTextureReference();
     unsigned char * getPixels();
-    ofPixelsRef getPixelsRef();
-    float getHeight();
-    float getWidth();
-    bool isConnected();
-    long frameNum;
-    int bitrate;
-    float frameRate;
+    ofPixelsRef     getPixelsRef();
+    float           getHeight();
+    float           getWidth();
+    bool            isConnected();
+    long            frameNum;
+    int             bitrate;
+    float           frameRate;
     
 private:
     struct SwsContext* imgctx;
     
-    AVFormatContext* context;
-    AVCodecContext* ccontext;
-    SwsContext* img_convert_ctx;
-    AVFormatContext* oc;
-    AVFrame* pic;
-    AVFrame* picrgb;
-    uint8_t* picture_buf2;
-    uint8_t* picture_buf;
-    AVPacket packet;
-    AVStream* stream;
-    int video_stream_index;
-    long long lastReceiveTime;
+    AVFormatContext*    context;
+    AVCodecContext*     ccontext;
+    SwsContext*         img_convert_ctx;
+    AVFormatContext*    oc;
+    AVFrame*            pic;
+    AVFrame*            picrgb;
+    uint8_t*            picture_buf2;
+    uint8_t*            picture_buf;
+    AVPacket            packet;
+    AVStream*           stream;
+    int                 video_stream_index;
+    long long           lastReceiveTime;
     
-    ofImage * lastFrame;
-    int encodedFrameSize;
+    ofImage *           lastFrame;
+    int                 encodedFrameSize;
     
-    void threadedFunction();
+    void                threadedFunction();
     
-    bool newFrame;
+    bool                newFrame;
     
-    unsigned char * pixelData;
+    unsigned char *     pixelData;
     
-  //  pthread_mutex_t mutex;
-    ofMutex mutex;
+    //  pthread_mutex_t mutex;
+    ofMutex             mutex;
 
     
     

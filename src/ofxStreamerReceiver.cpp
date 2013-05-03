@@ -229,7 +229,7 @@ ofPixelsRef ofxStreamerReceiver::getPixelsRef() {
     return lastFrame->getPixelsRef();
 }
 
-ofTexture ofxStreamerReceiver::getTextureReference() {
+ofTexture & ofxStreamerReceiver::getTextureReference() {
     return lastFrame->getTextureReference();
 }
 
