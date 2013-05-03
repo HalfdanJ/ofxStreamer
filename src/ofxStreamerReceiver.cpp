@@ -25,8 +25,13 @@ bool ofxStreamerReceiver::setup(int _port, string _host) {
     ofLog(OF_LOG_NOTICE, "Opening stream at " + url);
     
     startThread(false,false);
-    
+
+    lastFrame = new ofImage();
+    lastFrame->allocate(1, 1, OF_IMAGE_COLOR);
+
     return connected = true;
+    
+    
 }
 
 
@@ -39,12 +44,14 @@ void ofxStreamerReceiver::threadedFunction(){
     
     if(avformat_open_input(&context, url.c_str(),NULL,NULL) != 0){
         ofLog(OF_LOG_ERROR, "Could not open input.");
-        return connected = false;
+        connected = false;
+        return;
     }
     
     if(avformat_find_stream_info(context,NULL) < 0){
         ofLog(OF_LOG_ERROR, "Stream information not found.");
-        return connected = false;
+         connected = false;
+        return;
     }
     
     //search video stream
@@ -217,6 +224,7 @@ ofPixelsRef ofxStreamerReceiver::getPixelsRef() {
 }
 
 ofTexture & ofxStreamerReceiver::getTextureReference() {
+
     return lastFrame->getTextureReference();
 }
 
