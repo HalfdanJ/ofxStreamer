@@ -24,12 +24,7 @@ bool ofxStreamerReceiver::setup(int _port, string _host) {
     url = host + ":" + ofToString(port);
     ofLog(OF_LOG_NOTICE, "Opening stream at " + url);
     
-    
-    
-    
     startThread(false,false);
-    
-    
     
     return connected = true;
 }
@@ -117,8 +112,6 @@ void ofxStreamerReceiver::threadedFunction(){
             av_init_packet(&packet);
         }
         
-        
-        
         int readStatus = av_read_frame(context,&packet);
         
         if (readStatus == 0) {
@@ -156,12 +149,7 @@ void ofxStreamerReceiver::threadedFunction(){
             cout<<"EOF or error statuscode is: "<<ofToString(readStatus)<<endl;
         }
         
-        
-        
-        
-        
     }
-    
     
 }
 
@@ -178,7 +166,6 @@ void ofxStreamerReceiver::update() {
             
             // save frame to image
             lastFrame->setFromPixels(picrgb->data[0], width, height, OF_IMAGE_COLOR);
-            
             
             float timeDiff = ofGetElapsedTimeMillis() - lastReceiveTime;
             frameRate += ((1.0/(timeDiff/1000.0)) - frameRate)*0.8;
@@ -235,6 +222,10 @@ ofTexture & ofxStreamerReceiver::getTextureReference() {
 
 bool ofxStreamerReceiver::isFrameNew() {
     return (bHavePixelsChanged && allocated);
+}
+
+bool ofxStreamerReceiver::isConnected() {
+    return connected;
 }
 
 void ofxStreamerReceiver::close() {
