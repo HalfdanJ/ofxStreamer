@@ -61,16 +61,17 @@ public:
 private:
     struct SwsContext* imgctx;
     
-    AVFormatContext*    context;
-    AVCodecContext*     ccontext;
+    AVFormatContext*    mFormatContext;
     SwsContext*         img_convert_ctx;
     AVFormatContext*    oc;
-    AVFrame*            pic;
+    AVFrame*            mFrame;
     AVFrame*            picrgb;
     uint8_t*            picture_buf2;
     uint8_t*            picture_buf;
     AVPacket            packet;
-    AVStream*           stream;
+    AVStream*           mVideoStream;
+    AVCodecContext*     mVideoDecodeContext;
+    
     int                 video_stream_index;
     long long           lastReceiveTime;
     
@@ -85,6 +86,9 @@ private:
     
     //  pthread_mutex_t mutex;
     ofMutex             mutex;
+    
+    
+    int mVideoStreamIdx;
 
     
     

@@ -38,8 +38,7 @@ void testApp::update(){
         }
         
         
-        sender.encodeFrame(bytes, 640*480*3);
-        sender.sendFrame();
+        sender.sendFrame(bytes, 640*480*3);
         
     }
     else if(grabber.isFrameNew()){
@@ -49,10 +48,9 @@ void testApp::update(){
         
         inputImage.setFromPixels(data, 640, 480, OF_IMAGE_COLOR);
         
-        sender.encodeFrame(grabber.getPixels(),  640 * 480 * 3);
+        sender.sendFrame(grabber.getPixels(),  640 * 480 * 3);
         //    x264Encoder.encodeFrame(data, 640 * 480 * 3);
         
-        sender.sendFrame();
    }
     
     

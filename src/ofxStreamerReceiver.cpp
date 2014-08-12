@@ -36,9 +36,118 @@ bool ofxStreamerReceiver::setup(int _port, string _host) {
 
 
 void ofxStreamerReceiver::threadedFunction(){
-    context = avformat_alloc_context();
-    ccontext = avcodec_alloc_context3(NULL);
+
+
+    av_register_all();
+    avformat_network_init();
+    mFormatContext = avformat_alloc_context();
+
+    int err = avformat_open_input(&mFormatContext, url.c_str(), NULL, NULL);
+    if(err<0){
+        cout<<"avformat_open_input error "<<err<<endl;
+    }
     
+   // mFormatContext->max_analyze_duration = 5000000*5;
+    
+
+    // These flags work! But this negates the use of av_read_frame() as it now
+    // does not guarantee to return one frame.
+    // mFormatContext->flags |= AVFMT_FLAG_NOPARSE | AVFMT_FLAG_NOFILLIN;
+    
+    // These flags seem to have no effect.
+    // mFormatContext->flags |= AVFMT_FLAG_NOBUFFER;
+    // mFormatContext->flags |= AVFMT_FLAG_FLUSH_PACKETS;
+    // mFormatContext->avio_flags |= AVIO_FLAG_DIRECT;
+    
+    
+    
+    if(avformat_find_stream_info(mFormatContext,NULL) < 0){
+        ofLog(OF_LOG_ERROR, "Stream information not found.");
+        connected = false;
+        return;
+    }
+    av_dump_format(mFormatContext, 0, url.c_str(), 0);
+
+    
+    // Video stream.
+    mVideoStreamIdx = av_find_best_stream(mFormatContext, AVMEDIA_TYPE_VIDEO, -1, -1, NULL, 0);
+
+    AVStream* st = mFormatContext->streams[mVideoStreamIdx];
+    // This flag works! But this negates the use of av_read_frame() as it now
+    // does not guarantee to return one frame.
+    // st->need_parsing = AVSTREAM_PARSE_NONE;
+    
+    
+    // find decoder for the stream
+    AVCodecContext* dec_ctx = st->codec;
+    AVCodec* dec = avcodec_find_decoder(dec_ctx->codec_id);
+    if (dec->capabilities & CODEC_CAP_TRUNCATED)
+        dec_ctx->flags |= CODEC_FLAG_TRUNCATED;
+    dec_ctx->thread_type  = FF_THREAD_SLICE;
+    dec_ctx->thread_count = 1;
+    
+   
+    avcodec_open2(dec_ctx, dec, NULL);
+    mVideoStream        = mFormatContext->streams[mVideoStreamIdx];
+    mVideoDecodeContext = mVideoStream->codec;
+    
+    width = mVideoDecodeContext->width;
+    height = mVideoDecodeContext->height;
+    
+    img_convert_ctx = sws_getContext(width, height, mVideoDecodeContext->pix_fmt, width, height,
+                                     PIX_FMT_RGB24, SWS_BICUBIC, NULL, NULL, NULL);
+    
+
+
+    
+    picrgb = avcodec_alloc_frame();
+    int size2 = avpicture_get_size(PIX_FMT_RGB24, width, height);
+    picture_buf2 = (uint8_t*)(av_malloc(size2));
+    avpicture_fill((AVPicture *) picrgb, picture_buf2, PIX_FMT_RGB24, width, height);
+
+    
+    
+    while(isThreadRunning()){
+        AVPacket pkt;
+        av_init_packet(&pkt);
+        pkt.data = NULL;
+        pkt.size = 0;
+        
+        // wait for data.
+        if (av_read_frame(mFormatContext, &pkt) < 0){
+            cout<<"No frame"<<endl;
+        } else {
+            // decode video frame
+            int got_frame = 0;
+            mFrame = avcodec_alloc_frame();
+            int decodeResult = avcodec_decode_video2(mVideoDecodeContext, mFrame, &got_frame, &pkt);
+            if(decodeResult > 0 && got_frame == 1) {
+                mutex.lock();
+                
+                sws_scale(img_convert_ctx, mFrame->data, mFrame->linesize, 0, height, picrgb->data, picrgb->linesize);
+                
+                newFrame = true;
+                
+                mutex.unlock();
+                
+            } else {
+                cout<<"No frame decoded result is:"<<ofToString(decodeResult)<<endl;
+            }
+
+            
+            av_free_packet(&pkt);
+            avcodec_free_frame(&mFrame);
+        }
+        
+    }
+    
+    
+    
+    
+  /*  context = avformat_alloc_context();
+   
+    ccontext = avcodec_alloc_context3(NULL);
+   
     av_register_all();
     avformat_network_init();
     
@@ -63,7 +172,7 @@ void ofxStreamerReceiver::threadedFunction(){
     av_init_packet(&packet);
     
     oc = avformat_alloc_context();
-    
+    oc->ctx_flags = AVFMT_FLAG_NOBUFFER;
     stream = NULL;
     frameNum = 0;
     
@@ -134,6 +243,8 @@ void ofxStreamerReceiver::threadedFunction(){
                 packet.stream_index = stream->id;
                 encodedFrameSize = packet.size;
                 
+                packet.flags = AV_PKT_FLAG_KEY;
+                
                 // decode
                 int frameFinished = 0;
                 int result = avcodec_decode_video2(ccontext, pic, &frameFinished, &packet);
@@ -157,7 +268,7 @@ void ofxStreamerReceiver::threadedFunction(){
         }
         
     }
-    
+    */
 }
 
 void ofxStreamerReceiver::update() {
@@ -238,12 +349,6 @@ bool ofxStreamerReceiver::isConnected() {
 
 void ofxStreamerReceiver::close() {
     delete lastFrame;
-    av_free(pic);
-    av_free(picrgb);
-    av_free(picture_buf);
-    av_free(picture_buf2);
-    av_read_pause(context);
-    avformat_free_context(oc);
     allocated = false;
 }
 

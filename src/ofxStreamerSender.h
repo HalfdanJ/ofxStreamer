@@ -18,6 +18,7 @@ extern "C" {
 #include <x264.h>
 #include <libavformat/avformat.h>
 #include <libswscale/swscale.h>
+#include  <libavutil/opt.h>
 }
 
 #include "ofMain.h"
@@ -31,14 +32,13 @@ public:
     ofxStreamerSender();
     
     void setup(int width, int height, string destination_ip = "127.0.0.1", int destination_port= 1234, string preset="ultrafast");
-    
-    //Supports only RGB formatted image data (so data_length should be width*height*3)
-    bool encodeFrame(unsigned char *data, int data_length);
-    
-    bool encodeFrame(ofImage image);
-    
+
     //Sends the encoded frame
-    bool sendFrame();
+    //Supports only RGB formatted image data (so data_length should be width*height*3)
+    bool sendFrame(unsigned char *data, int data_length);
+    
+    bool sendFrame(ofImage image);
+    
     
     int width;
     int height;
@@ -61,15 +61,21 @@ public:
     bool streaming;
     
 private:
-    struct AVFormatContext* avctx;
+    struct AVFormatContext* mFormatContext;
     struct x264_t* encoder;
     struct SwsContext* imgctx;
+    
+    AVCodec *mCodec;
+    AVCodecContext *mCodecContext;
 
     x264_picture_t picture_in;
     x264_picture_t * picture_out;
     AVStream * stream;
     
     long long lastSendTime;
+    AVFrame * frame;
+    uint8_t *frameBuf;
+
 
 
 };
