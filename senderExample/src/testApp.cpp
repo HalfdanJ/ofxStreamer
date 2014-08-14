@@ -4,7 +4,7 @@
 void testApp::setup(){
     ofSetWindowTitle("Sender");
     ofSetWindowPosition(0, 0);
-    ofSetFrameRate(70);
+    ofSetFrameRate(30);
 
     ofLogLevel(OF_LOG_WARNING);
     

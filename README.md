@@ -49,7 +49,7 @@ ffmpeg
 	$ make
 
 x264
-
+	$ git clone git://git.videolan.org/x264.git
 	$ ./configure  --host=i686-apple-darwin11.1.0 --extra-cflags="-arch i386" --extra-ldflags="-arch i386" --disable-asm
 	$ make
 

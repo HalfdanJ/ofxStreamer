@@ -84,7 +84,7 @@ void ofxStreamerReceiver::threadedFunction(){
     if (dec->capabilities & CODEC_CAP_TRUNCATED)
         dec_ctx->flags |= CODEC_FLAG_TRUNCATED;
     dec_ctx->thread_type  = FF_THREAD_SLICE;
-    dec_ctx->thread_count = 1;
+    dec_ctx->thread_count = 4;
     
    
     avcodec_open2(dec_ctx, dec, NULL);
@@ -125,6 +125,7 @@ void ofxStreamerReceiver::threadedFunction(){
                 mutex.lock();
                 
                 sws_scale(img_convert_ctx, mFrame->data, mFrame->linesize, 0, height, picrgb->data, picrgb->linesize);
+                encodedFrameSize = pkt.size;
                 
                 newFrame = true;
                 
@@ -140,135 +141,6 @@ void ofxStreamerReceiver::threadedFunction(){
         }
         
     }
-    
-    
-    
-    
-  /*  context = avformat_alloc_context();
-   
-    ccontext = avcodec_alloc_context3(NULL);
-   
-    av_register_all();
-    avformat_network_init();
-    
-    if(avformat_open_input(&context, url.c_str(),NULL,NULL) != 0){
-        ofLog(OF_LOG_ERROR, "Could not open input.");
-        connected = false;
-        return;
-    }
-    
-    if(avformat_find_stream_info(context,NULL) < 0){
-        ofLog(OF_LOG_ERROR, "Stream information not found.");
-         connected = false;
-        return;
-    }
-    
-    //search video stream
-    for(int i =0;i<context->nb_streams;i++){
-        if(context->streams[i]->codec->codec_type == AVMEDIA_TYPE_VIDEO)
-            video_stream_index = i;
-    }
-    
-    av_init_packet(&packet);
-    
-    oc = avformat_alloc_context();
-    oc->ctx_flags = AVFMT_FLAG_NOBUFFER;
-    stream = NULL;
-    frameNum = 0;
-    
-    //start reading packets from stream and write them to file
-    av_read_play(context);
-    
-    AVCodec *codec = NULL;
-    codec = avcodec_find_decoder(CODEC_ID_H264);
-    if (!codec) {
-        ofLog(OF_LOG_FATAL_ERROR, "Codec not found.");
-        exit(1);
-    }
-    
-    avcodec_get_context_defaults3(ccontext, codec);
-    avcodec_copy_context(ccontext,context->streams[video_stream_index]->codec);
-    
-    if (avcodec_open2(ccontext, codec, NULL) < 0) {
-        ofLog(OF_LOG_FATAL_ERROR, "Could not open codec.");
-        exit(1);
-    }
-    
-    width = ccontext->width;
-    height = ccontext->height;
-    
-    
-    pixelData = (unsigned char*)malloc(sizeof(unsigned char)*width*height*3);
-    
-    for(int i=0;i<width*height*3;i++){
-        pixelData[i] = 0;
-    }
-    
-    img_convert_ctx = sws_getContext(width, height, ccontext->pix_fmt, width, height,
-                                     PIX_FMT_RGB24, SWS_BICUBIC, NULL, NULL, NULL);
-    
-    int size = avpicture_get_size(PIX_FMT_YUV420P, width, height);
-    picture_buf = (uint8_t*)(av_malloc(size));
-    pic = avcodec_alloc_frame();
-    picrgb = avcodec_alloc_frame();
-    int size2 = avpicture_get_size(PIX_FMT_RGB24, width, height);
-    picture_buf2 = (uint8_t*)(av_malloc(size2));
-    avpicture_fill((AVPicture *
-                    ) pic, picture_buf, PIX_FMT_YUV420P, width, height);
-    avpicture_fill((AVPicture *) picrgb, picture_buf2, PIX_FMT_RGB24, width, height);
-    
-    
-    
-    
-    
-    while(isThreadRunning()){
-        
-        if(&packet){
-            av_free_packet(&packet);
-            av_init_packet(&packet);
-        }
-        
-        int readStatus = av_read_frame(context,&packet);
-        
-        if (readStatus == 0) {
-                        
-            if(packet.stream_index == video_stream_index){ //packet is video
-                
-                if(stream == NULL) {
-                    // create stream
-                    stream = avformat_new_stream(oc,context->streams[video_stream_index]->codec->codec);
-                    avcodec_copy_context(stream->codec,context->streams[video_stream_index]->codec);
-                    stream->sample_aspect_ratio = context->streams[video_stream_index]->codec->sample_aspect_ratio;
-                }
-                packet.stream_index = stream->id;
-                encodedFrameSize = packet.size;
-                
-                packet.flags = AV_PKT_FLAG_KEY;
-                
-                // decode
-                int frameFinished = 0;
-                int result = avcodec_decode_video2(ccontext, pic, &frameFinished, &packet);
-                
-                if(result > 0 && frameFinished == 1) {
-                    mutex.lock();
-
-                    sws_scale(img_convert_ctx, pic->data, pic->linesize, 0, ccontext->height, picrgb->data, picrgb->linesize);
-                    
-                    newFrame = true;
-                    
-                    mutex.unlock();
-
-                } else {
-                    cout<<"No frame decoded result is:"<<ofToString(result)<<endl;
-                }
-                
-            }
-        } else {
-            cout<<"EOF or error statuscode is: "<<ofToString(readStatus)<<endl;
-        }
-        
-    }
-    */
 }
 
 void ofxStreamerReceiver::update() {
@@ -278,7 +150,6 @@ void ofxStreamerReceiver::update() {
                 lastFrame = new ofImage();
                 lastFrame->allocate(width, height, OF_IMAGE_COLOR);
                 allocated = true;
-                
             }
             
             
