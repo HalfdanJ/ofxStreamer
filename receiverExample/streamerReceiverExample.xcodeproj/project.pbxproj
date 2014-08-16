@@ -22,6 +22,7 @@
 		DD196CDD1721B93A00ACAB87 /* ofxOscMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD196CCD1721B93A00ACAB87 /* ofxOscMessage.cpp */; };
 		DD196CDE1721B93A00ACAB87 /* ofxOscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD196CCF1721B93A00ACAB87 /* ofxOscReceiver.cpp */; };
 		DD196CDF1721B93A00ACAB87 /* ofxOscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD196CD11721B93A00ACAB87 /* ofxOscSender.cpp */; };
+		DD2B17B8199EC13D00FB5333 /* VideoDecodeAcceleration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD2B17B7199EC13D00FB5333 /* VideoDecodeAcceleration.framework */; };
 		DD76B7541720057400965044 /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B74C1720057400965044 /* libavcodec.a */; };
 		DD76B7551720057400965044 /* libavdevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B74D1720057400965044 /* libavdevice.a */; };
 		DD76B7561720057400965044 /* libavfilter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD76B74E1720057400965044 /* libavfilter.a */; };
@@ -120,6 +121,7 @@
 		DD196CD01721B93A00ACAB87 /* ofxOscReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscReceiver.h; sourceTree = "<group>"; };
 		DD196CD11721B93A00ACAB87 /* ofxOscSender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxOscSender.cpp; sourceTree = "<group>"; };
 		DD196CD21721B93A00ACAB87 /* ofxOscSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscSender.h; sourceTree = "<group>"; };
+		DD2B17B7199EC13D00FB5333 /* VideoDecodeAcceleration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoDecodeAcceleration.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/VideoDecodeAcceleration.framework; sourceTree = SYSTEM_DEVELOPER_DIR; };
 		DD76B74C1720057400965044 /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = ../libs/osx/libavcodec.a; sourceTree = "<group>"; };
 		DD76B74D1720057400965044 /* libavdevice.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavdevice.a; path = ../libs/osx/libavdevice.a; sourceTree = "<group>"; };
 		DD76B74E1720057400965044 /* libavfilter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavfilter.a; path = ../libs/osx/libavfilter.a; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD2B17B8199EC13D00FB5333 /* VideoDecodeAcceleration.framework in Frameworks */,
 				E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */,
 				E7E077E815D3B6510020DFD4 /* QTKit.framework in Frameworks */,
 				E4EB6799138ADC1D00A09F29 /* GLUT.framework in Frameworks */,
@@ -386,6 +389,7 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
+				DD2B17B7199EC13D00FB5333 /* VideoDecodeAcceleration.framework */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,

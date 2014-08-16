@@ -62,6 +62,10 @@ void ofxStreamerSender::setup(int _width, int _height, string destination_ip, in
     }
     stream->id = mFormatContext->nb_streams-1;
     
+    stream->time_base.den = 30;
+    stream->time_base.num = 1;
+
+    
     
     //Higher value creates better quality (doh)
     int mBitrate = 800*1000;
@@ -77,8 +81,6 @@ void ofxStreamerSender::setup(int _width, int _height, string destination_ip, in
     mCodecContext->height   = height;
     mCodecContext->gop_size = mGopSize;
     mCodecContext->pix_fmt  = AV_PIX_FMT_YUV420P;
-    mCodecContext->time_base.den = 30;
-    mCodecContext->time_base.num = 1;
     mCodecContext->max_b_frames  = 0;
     mCodecContext->thread_count  = 4;
     mCodecContext->thread_type   = FF_THREAD_SLICE;

@@ -41,17 +41,21 @@ Run
 	
 Then copy the just generated libbz2.a
 
+
+
+x264
+	$ git clone git://git.videolan.org/x264.git
+	$ ./configure --host=i686-apple-darwin11.1.0 --extra-cflags="-arch i386" --extra-ldflags="-arch i386" --enable-shared
+	$ make
+	$ sudo make install
+
 ffmpeg
 
 	$ git clone git://source.ffmpeg.org/ffmpeg.git ffmpeg
 	$ cd ffmpeg
-	$ ./configure --cc="clang -m32" --enable-gpl --prefix="/Users/jonas/Desktop/ffmpeg"  --enable-libx264 
+	$ ./configure  --enable-gpl   --enable-libx264 --extra-ldflags="-L/usr/local/lib" --extra-cflags="-I/usr/local/include" --cc="clang -m32"
 	$ make
-
-x264
-	$ git clone git://git.videolan.org/x264.git
-	$ ./configure  --host=i686-apple-darwin11.1.0 --extra-cflags="-arch i386" --extra-ldflags="-arch i386" --disable-asm
-	$ make
+	$ sudo make install
 
 ### Testing
 List of RTSP streams for testing of the decoder: http://www.vlc.eu.pn/
