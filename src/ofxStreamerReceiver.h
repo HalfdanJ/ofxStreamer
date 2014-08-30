@@ -2,8 +2,6 @@
 //  ofxStreamerReceiver.h
 //  x264Example
 //
-//  Created by Johan Bichel Lindegaard on 4/18/13.
-//
 //
 
 #pragma once

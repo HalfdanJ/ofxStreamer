@@ -2,8 +2,6 @@
 //  ofxStreamerReceiver.c
 //  x264Example
 //
-//  Created by Johan Bichel Lindegaard on 4/18/13.
-//
 //
 
 

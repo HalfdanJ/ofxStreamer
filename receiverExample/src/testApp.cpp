@@ -7,10 +7,6 @@ void testApp::setup(){
 
     ofLogLevel(OF_LOG_WARNING);
     receiver.setup(1234);
-    
-    oscSender.setup("localhost.local", 9999);
-    
-    
 }
 
 //--------------------------------------------------------------
@@ -22,17 +18,8 @@ void testApp::update(){
 void testApp::draw(){
     ofBackgroundGradient(ofColor(28,78,28), ofColor(14,25,14),OF_GRADIENT_LINEAR);
     
-   // if(receiver.isFrameNew()) {
-        receiver.draw(0, 0);
-        
-      /*  if(receiver.getPixels()[0] == 255){
-            ofxOscMessage msg;
-            msg.setAddress("/streamer/hello");
-            oscSender.sendMessage(msg);
+    receiver.draw(0, 0, 640, 480);
 
-        }*/
-   // }
-    
     int y = 15;
     int x = 650;
     
@@ -41,6 +28,7 @@ void testApp::draw(){
     ofDrawBitmapString("Frame Rate: "+ofToString(receiver.frameRate,1)+" fps", 650, y+=15);
     ofDrawBitmapString("bitrate: "+ofToString(receiver.bitrate)+" kbits/s", 650, y+=15);
     ofDrawBitmapString("URL: "+receiver.url, 650, y+=35);
+    ofDrawBitmapString("Resolution: "+ofToString(receiver.getWidth())+"x"+ofToString(receiver.getHeight()), 650, y+=35);
     
 }
 

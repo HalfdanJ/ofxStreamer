@@ -37,7 +37,7 @@ public:
     //Supports only RGB formatted image data (so data_length should be width*height*3)
     bool sendFrame(unsigned char *data, int data_length);
     
-    bool sendFrame(ofImage image);
+    bool sendFrame(ofPixels image);
     
     
     int width;

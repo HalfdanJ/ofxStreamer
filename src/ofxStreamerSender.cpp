@@ -115,16 +115,9 @@ void ofxStreamerSender::setup(int _width, int _height, string destination_ip, in
 }
 
 
-bool ofxStreamerSender::sendFrame(ofImage image){
-    if(image.type != OF_IMAGE_COLOR){
-        cout<<"Only implemented OF_IMAGE_COLOR type image in encodeFrame"<<endl;
-        return false;
-    }
-    
-    unsigned char * data = image.getPixelsRef().getPixels();
-    int length = image.getWidth() * image.getHeight() * 3;
-    
-    return sendFrame(data, length);
+bool ofxStreamerSender::sendFrame(ofPixels pixels){
+    int length = pixels.getBytesPerPixel()*pixels.getWidth()*pixels.getHeight();
+    return sendFrame(pixels.getPixels(), length);
 }
 
 
