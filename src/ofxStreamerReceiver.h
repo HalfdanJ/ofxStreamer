@@ -25,7 +25,7 @@ extern "C"
 #include <libswscale/swscale.h>
 }
 
-class ofxStreamerReceiver : ofThread {
+class ofxStreamerReceiver : public ofBaseVideoPlayer, ofThread {
     
 public:
     ofxStreamerReceiver();
@@ -47,6 +47,7 @@ public:
     void            draw(const ofRectangle &r);
     void            close();
     ofTexture &     getTextureReference();
+    ofTexture *     getTexture(){return NULL;}
     unsigned char * getPixels();
     ofPixelsRef     getPixelsRef();
     float           getHeight();
@@ -56,21 +57,34 @@ public:
     int             bitrate;
     float           frameRate;
     
+    bool            loadMovie(string name){return false;}
+    void            play(){}
+    void            pause(){}
+    void            stop(){}
+    
+    bool isPaused(){return false;}
+    bool isLoaded(){return connected;}
+    bool isPlaying(){return false;}
+    bool setPixelFormat(ofPixelFormat pixelFormat){return false;}
+    ofPixelFormat getPixelFormat(){return OF_PIXELS_RGB;}
+    
+    void setDead(bool d) { dead = d; }
+
+
+    
 private:
     struct SwsContext* imgctx;
     
     AVFormatContext*    mFormatContext;
     SwsContext*         img_convert_ctx;
-    AVFormatContext*    oc;
     AVFrame*            mFrame;
     AVFrame*            picrgb;
     uint8_t*            picture_buf2;
     uint8_t*            picture_buf;
-    AVPacket            packet;
     AVStream*           mVideoStream;
     AVCodecContext*     mVideoDecodeContext;
+    int                 mVideoStreamIdx;    
     
-    int                 video_stream_index;
     long long           lastReceiveTime;
     
     ofImage *           lastFrame;
@@ -79,17 +93,13 @@ private:
     void                threadedFunction();
     
     bool                newFrame;
+    bool                dead;
     
     unsigned char *     pixelData;
     
-    //  pthread_mutex_t mutex;
-    ofMutex             mutex;
+    ofMutex             mutex;    
     
-    
-    int mVideoStreamIdx;
 
-    
-    
 };
 
 

@@ -14,6 +14,7 @@ ofxStreamerReceiver::ofxStreamerReceiver(){
     allocated = false;
     connected = false;
     newFrame = false;
+    dead = false;
 }
 
 bool ofxStreamerReceiver::setup(int _port, string _host) {
@@ -27,7 +28,10 @@ bool ofxStreamerReceiver::setup(int _port, string _host) {
     lastFrame = new ofImage();
     lastFrame->allocate(1, 1, OF_IMAGE_COLOR);
 
-    return connected = true;
+    av_log_set_level(48);
+
+    
+    return true;
     
     
 }
@@ -45,6 +49,7 @@ void ofxStreamerReceiver::threadedFunction(){
         cout<<"avformat_open_input error "<<err<<endl;
     }
     
+   // mFormatContext->debug = true;
    // mFormatContext->max_analyze_duration = 5000000*5;
     
 
@@ -112,30 +117,39 @@ void ofxStreamerReceiver::threadedFunction(){
         pkt.size = 0;
         
         // wait for data.
-        if (av_read_frame(mFormatContext, &pkt) < 0){
-            cout<<"No frame"<<endl;
-        } else {
-            // decode video frame
-            int got_frame = 0;
-            mFrame = avcodec_alloc_frame();
-            int decodeResult = avcodec_decode_video2(mVideoDecodeContext, mFrame, &got_frame, &pkt);
-            if(decodeResult > 0 && got_frame == 1) {
-                mutex.lock();
+        int readStatus = av_read_frame(mFormatContext,&pkt);
+        
+        if (readStatus == 0) {
+            if(pkt.stream_index == mVideoStreamIdx){ //packet is video
                 
-                sws_scale(img_convert_ctx, mFrame->data, mFrame->linesize, 0, height, picrgb->data, picrgb->linesize);
-                encodedFrameSize = pkt.size;
+                // decode video frame
+                int got_frame = 0;
+                mFrame = avcodec_alloc_frame();
+                int decodeResult = avcodec_decode_video2(mVideoDecodeContext, mFrame, &got_frame, &pkt);
+                if(decodeResult > 0 && got_frame == 1) {
+                    connected = true;
+                    
+                    mutex.lock();
+                    
+                    sws_scale(img_convert_ctx, mFrame->data, mFrame->linesize, 0, height, picrgb->data, picrgb->linesize);
+                    encodedFrameSize = pkt.size;
+                    
+                    newFrame = true;
+                    
+                    mutex.unlock();
+                    
+                } else {
+                  //  cout<<"No frame decoded result is:"<<ofToString(decodeResult)<<endl;
+                }
                 
-                newFrame = true;
                 
-                mutex.unlock();
-                
-            } else {
-                cout<<"No frame decoded result is:"<<ofToString(decodeResult)<<endl;
+                av_free_packet(&pkt);
+                avcodec_free_frame(&mFrame);
             }
-
-            
-            av_free_packet(&pkt);
-            avcodec_free_frame(&mFrame);
+        } else {
+            setDead(true);
+            newFrame = false;
+            cout << "EOF or error statuscode is: " << ofToString(readStatus) << "\n" << endl;
         }
         
     }
@@ -217,8 +231,24 @@ bool ofxStreamerReceiver::isConnected() {
 }
 
 void ofxStreamerReceiver::close() {
+    waitForThread(true);
+
     delete lastFrame;
     allocated = false;
+    
+    if(pixelData){
+        free(pixelData);
+    }
+    
+    av_free(mFrame);
+    av_free(picrgb);
+    av_free(picture_buf2);
+    av_free(picture_buf);
+    av_free(mVideoDecodeContext);
+    av_free(mVideoStream);
+    
+    sws_freeContext(img_convert_ctx);
+    
 }
 
 float ofxStreamerReceiver::getWidth() {
