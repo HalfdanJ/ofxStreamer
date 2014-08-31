@@ -7,12 +7,9 @@ void testApp::setup(){
 
     ofLogLevel(OF_LOG_WARNING);
     
-    //sender.setup(640, 480, "jive.local", 1234);
-    
     grabber.initGrabber(320, 240);
-
-    sender.setup(grabber.getWidth(), grabber.getHeight());
-
+    
+    sender.setup(grabber.getWidth(), grabber.getHeight(), "localhost");
 }
 
 //--------------------------------------------------------------
@@ -45,6 +42,12 @@ void testApp::draw(){
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
+    if(key == 'o'){
+        sender.setup(grabber.getWidth(), grabber.getHeight());
+    }
+    if(key == 'c'){
+        sender.close();
+    }
 }
 
 //--------------------------------------------------------------

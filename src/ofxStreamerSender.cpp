@@ -16,9 +16,18 @@ ofxStreamerSender::ofxStreamerSender(){
     streaming = false;
 }
 
+ofxStreamerSender::~ofxStreamerSender(){
+    close();
+}
 
 
 void ofxStreamerSender::setup(int _width, int _height, string destination_ip, int destination_port ,string _preset){
+    
+    if(streaming){
+        ofLog(OF_LOG_ERROR, "Cant setup sender again, please close first");
+        return;
+    }
+    
     width = _width,
     height = _height;
     preset = _preset;
@@ -156,7 +165,6 @@ bool ofxStreamerSender::sendFrame(unsigned char *data, int data_length){
         }
         
         
-        AVCodecContext *codecContext = stream->codec;
         p.stream_index = stream->index;
         p.duration = 0;
         
@@ -184,7 +192,21 @@ bool ofxStreamerSender::sendFrame(unsigned char *data, int data_length){
 }
 
 
-x264_picture_t* ofxStreamerSender::getPictureRef(){
-    return picture_out;
+
+void ofxStreamerSender::close(){
+    if(streaming){
+        delete frameBuf;
+        avcodec_free_frame(&frame);
+        avcodec_close(mCodecContext);
+        
+        avio_close(mFormatContext->pb);
+        
+        avformat_free_context(mFormatContext);
+        
+        sws_freeContext(imgctx);
+        
+    }
+    
+    streaming = false;
 }
 

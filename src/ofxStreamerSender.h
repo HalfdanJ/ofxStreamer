@@ -30,15 +30,16 @@ class ofxStreamerSender {
     
 public:
     ofxStreamerSender();
+    ~ofxStreamerSender();
     
     void setup(int width, int height, string destination_ip = "127.0.0.1", int destination_port= 1234, string preset="ultrafast");
-
+    
+    void close();
+    
     //Sends the encoded frame
     //Supports only RGB formatted image data (so data_length should be width*height*3)
     bool sendFrame(unsigned char *data, int data_length);
-    
     bool sendFrame(ofPixels image);
-    
     
     int width;
     int height;
@@ -51,8 +52,6 @@ public:
     
     string preset;
 
-    
-    x264_picture_t * getPictureRef();
     
     //Raw encoded h264 frame data
     unsigned char * encodedFrameData;
