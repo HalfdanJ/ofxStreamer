@@ -68,8 +68,10 @@ public:
     bool setPixelFormat(ofPixelFormat pixelFormat){return false;}
     ofPixelFormat getPixelFormat(){return OF_PIXELS_RGB;}
     
-    void setDead(bool d) { dead = d; }
-
+    void setConnected(bool d);
+    
+    ofEvent<void> onConnect;
+    ofEvent<void> onDisconnect;
 
     
 private:
@@ -97,7 +99,8 @@ private:
     
     unsigned char *     pixelData;
     
-    ofMutex             mutex;    
+    ofMutex             mutex;
+    bool                open;
     
 
 };

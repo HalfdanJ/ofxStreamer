@@ -29,7 +29,7 @@ bool ofxStreamerReceiver::setup(int _port, string _host) {
     lastFrame->allocate(1, 1, OF_IMAGE_COLOR);
 
     av_log_set_level(48);
-
+    open = true;
     
     return true;
     
@@ -50,7 +50,7 @@ void ofxStreamerReceiver::threadedFunction(){
     }
     
    // mFormatContext->debug = true;
-   // mFormatContext->max_analyze_duration = 5000000*5;
+    mFormatContext->max_analyze_duration = 1000000;
     
 
     // These flags work! But this negates the use of av_read_frame() as it now
@@ -127,7 +127,7 @@ void ofxStreamerReceiver::threadedFunction(){
                 mFrame = avcodec_alloc_frame();
                 int decodeResult = avcodec_decode_video2(mVideoDecodeContext, mFrame, &got_frame, &pkt);
                 if(decodeResult > 0 && got_frame == 1) {
-                    connected = true;
+                    setConnected(true);
                     
                     mutex.lock();
                     
@@ -147,7 +147,7 @@ void ofxStreamerReceiver::threadedFunction(){
                 avcodec_free_frame(&mFrame);
             }
         } else {
-            setDead(true);
+            setConnected(false);
             newFrame = false;
             cout << "EOF or error statuscode is: " << ofToString(readStatus) << "\n" << endl;
         }
@@ -156,7 +156,7 @@ void ofxStreamerReceiver::threadedFunction(){
 }
 
 void ofxStreamerReceiver::update() {
-    if(mutex.tryLock()){
+    if(open && mutex.tryLock()){
         if(newFrame){
             if(!allocated){
                 lastFrame = new ofImage();
@@ -230,22 +230,36 @@ bool ofxStreamerReceiver::isConnected() {
     return connected;
 }
 
+void ofxStreamerReceiver::setConnected(bool d){
+    if(connected != d){
+        if(d){
+            ofNotifyEvent(onConnect);
+        } else {
+            ofNotifyEvent(onDisconnect);
+        }
+    }
+    connected = d;
+}
+
 void ofxStreamerReceiver::close() {
     waitForThread(true);
 
+    avformat_close_input(&mFormatContext);
+
     delete lastFrame;
     allocated = false;
+    newFrame = false;
+    connected = false;
+    open = false;
     
     if(pixelData){
         free(pixelData);
     }
     
-    av_free(mFrame);
+    avcodec_free_frame(&mFrame);
     av_free(picrgb);
     av_free(picture_buf2);
     av_free(picture_buf);
-    av_free(mVideoDecodeContext);
-    av_free(mVideoStream);
     
     sws_freeContext(img_convert_ctx);
     

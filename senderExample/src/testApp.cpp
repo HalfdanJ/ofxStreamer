@@ -9,7 +9,7 @@ void testApp::setup(){
     
     grabber.initGrabber(320, 240);
     
-    sender.setup(grabber.getWidth(), grabber.getHeight(), "localhost");
+    sender.setup(grabber.getWidth(), grabber.getHeight(), "127.0.0.1");
 }
 
 //--------------------------------------------------------------
