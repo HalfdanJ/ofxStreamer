@@ -23,16 +23,13 @@ extern "C" {
 
 #include "ofMain.h"
 
-
-
 class ofxStreamerSender {
-    
     
 public:
     ofxStreamerSender();
     ~ofxStreamerSender();
     
-    void setup(int width, int height, string destination_ip = "127.0.0.1", int destination_port= 1234, string preset="ultrafast");
+    void setup(int width, int height, string destination_ip = "127.0.0.1", int destination_port= 1234, string preset="ultrafast", string tune="zerolatency");
     
     void close();
     
@@ -51,13 +48,19 @@ public:
     string url;
     
     string preset;
-
+    string tune;
     
     //Raw encoded h264 frame data
     unsigned char * encodedFrameData;
     int encodedFrameSize;
     
     bool streaming;
+    
+    
+    // todo: getters and setters for tune and preset
+    // setter getter for framerate
+    // setter for bitrate
+
     
 private:
     struct AVFormatContext* mFormatContext;
@@ -75,8 +78,7 @@ private:
     AVFrame * frame;
     uint8_t *frameBuf;
 
-
-
+    
 };
 
 

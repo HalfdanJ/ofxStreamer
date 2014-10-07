@@ -40,6 +40,7 @@ public:
     
     bool            setup(int port, std::string host="udp://@");
     void            update();
+    bool            isFrameNew() const;
     bool            isFrameNew();
     void            draw(float x, float y);
     void            draw(float x, float y, float w, float h);
@@ -49,9 +50,15 @@ public:
     ofTexture &     getTextureReference();
     ofTexture *     getTexture(){return NULL;}
     unsigned char * getPixels();
+    
     ofPixelsRef     getPixelsRef();
+    ofPixelsRef     getPixelsRef() const;
+
+    float           getHeight() const;
     float           getHeight();
+    float           getWidth() const;
     float           getWidth();
+    bool            isConnected() const;
     bool            isConnected();
     long            frameNum;
     int             bitrate;
@@ -62,11 +69,16 @@ public:
     void            pause(){}
     void            stop(){}
     
-    bool isPaused(){return false;}
-    bool isLoaded(){return connected;}
-    bool isPlaying(){return false;}
+    bool isPaused() const {return false;}
+    bool isLoaded() const {return connected;}
+    bool isPlaying() const {return false;}
+    
+    bool isPaused() {return false;}
+    bool isLoaded() {return connected;}
+    bool isPlaying() {return false;}
+    
     bool setPixelFormat(ofPixelFormat pixelFormat){return false;}
-    ofPixelFormat getPixelFormat(){return OF_PIXELS_RGB;}
+    ofPixelFormat getPixelFormat() const {return OF_PIXELS_RGB;}
     
     void setConnected(bool d);
     

@@ -217,18 +217,32 @@ ofPixelsRef ofxStreamerReceiver::getPixelsRef() {
     return lastFrame->getPixelsRef();
 }
 
+ofPixelsRef ofxStreamerReceiver::getPixelsRef() const {
+    return lastFrame->getPixelsRef();
+}
+
 ofTexture & ofxStreamerReceiver::getTextureReference() {
 
     return lastFrame->getTextureReference();
 }
 
-bool ofxStreamerReceiver::isFrameNew() {
+bool ofxStreamerReceiver::isFrameNew() const {
     return (bHavePixelsChanged && allocated);
 }
 
-bool ofxStreamerReceiver::isConnected() {
+bool ofxStreamerReceiver::isFrameNew() {
+    return static_cast<const ofxStreamerReceiver *>(this)->isFrameNew();
+}
+
+bool ofxStreamerReceiver::isConnected() const {
     return connected;
 }
+
+bool ofxStreamerReceiver::isConnected() {
+    return static_cast<const ofxStreamerReceiver *>(this)->isConnected();
+}
+
+
 
 void ofxStreamerReceiver::setConnected(bool d){
     if(connected != d){
@@ -265,10 +279,19 @@ void ofxStreamerReceiver::close() {
     
 }
 
-float ofxStreamerReceiver::getWidth() {
+float ofxStreamerReceiver::getWidth() const {
     return width;
 }
 
+float ofxStreamerReceiver::getWidth() {
+    return static_cast<const ofxStreamerReceiver *>(this)->getWidth();
+
+}
+
 float ofxStreamerReceiver::getHeight() {
+    return static_cast<const ofxStreamerReceiver *>(this)->getHeight();
+}
+
+float ofxStreamerReceiver::getHeight() const {
     return height;
 }

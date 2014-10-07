@@ -2,14 +2,9 @@
 //  ofxX264.cpp
 //  x264Example
 //
-//  Created by Jonas Jongejan on 17/04/13.
-//
 //
 
 #include "ofxStreamerSender.h"
-
-
-
 
 
 ofxStreamerSender::ofxStreamerSender(){
@@ -21,7 +16,7 @@ ofxStreamerSender::~ofxStreamerSender(){
 }
 
 
-void ofxStreamerSender::setup(int _width, int _height, string destination_ip, int destination_port ,string _preset){
+void ofxStreamerSender::setup(int _width, int _height, string destination_ip, int destination_port ,string _preset, string _tune){
     
     if(streaming){
         ofLog(OF_LOG_ERROR, "Cant setup sender again, please close first");
@@ -31,12 +26,12 @@ void ofxStreamerSender::setup(int _width, int _height, string destination_ip, in
     width = _width,
     height = _height;
     preset = _preset;
+    tune = _tune;
     
     frameNum = 0;
     
     av_register_all();
     avformat_network_init();
-    
     
     //Create scale context for converting from rgb to yuv
     imgctx = sws_getContext(width, height, AV_PIX_FMT_RGB24,
@@ -74,8 +69,6 @@ void ofxStreamerSender::setup(int _width, int _height, string destination_ip, in
     stream->time_base.den = 30;
     stream->time_base.num = 1;
 
-    
-    
     //Higher value creates better quality (doh)
     int mBitrate = 800*1000;
     
@@ -99,10 +92,26 @@ void ofxStreamerSender::setup(int _width, int _height, string destination_ip, in
         mCodecContext->flags     |= CODEC_FLAG_GLOBAL_HEADER;
     }
     
+    // Todo: implement more settings from:
+    // http://mewiki.project357.com/wiki/X264_Settings
     
-    av_opt_set(mCodecContext->priv_data, "preset", "fast", 0);
-    av_opt_set(mCodecContext->priv_data, "tune", "zerolatency", 0);
+    /*Preset 
+     
+     Change options to trade off compression efficiency against encoding speed. If you specify a preset, the changes it makes will be applied before all other parameters are applied.
+     You should generally set this option to the slowest you can bear.
+     Values available: ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, veryslow, placebo.
+     
+    */
     
+    av_opt_set(mCodecContext->priv_data, "preset", preset.c_str(), 0);
+    
+    /* Tune
+     Tune options to further optimize them for your input content. If you specify a tuning, the changes will be applied after --preset but before all other parameters.
+     If your source content matches one of the available tunings you can use this, otherwise leave unset.
+     Values available: film, animation, grain, stillimage, psnr, ssim, fastdecode, zerolatency.
+     */
+    
+    av_opt_set(mCodecContext->priv_data, "tune", tune.c_str(), 0);
     
     avcodec_open2(mCodecContext, mCodec, NULL);
 
@@ -184,7 +193,6 @@ bool ofxStreamerSender::sendFrame(unsigned char *data, int data_length){
 
         frame->pts += av_rescale_q(1, stream->codec->time_base, stream->time_base);
         
-
 
         return true;
     }
