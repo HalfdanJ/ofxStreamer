@@ -1,6 +1,5 @@
 //
 //  ofxStreamerReceiver.c
-//  x264Example
 //
 //
 
@@ -27,8 +26,11 @@ bool ofxStreamerReceiver::setup(int _port, string _host) {
 
     lastFrame = new ofImage();
     lastFrame->allocate(1, 1, OF_IMAGE_COLOR);
-
-    av_log_set_level(48);
+    if(ofGetLogLevel() == OF_LOG_VERBOSE) {
+        av_log_set_level(48);
+    } else {
+        av_log_set_level(0);
+    }
     open = true;
     
     return true;
