@@ -12,8 +12,6 @@ Works currently only on Mac OS X. Tested on 10.8.3
 ### Adding to another project
 Copy the folder to addons, remove example
 
-WRONG:
-
 	in other linker flags add "$(SRCROOT)/../libs/osx/libx264.a"  (or just drag the file into other linker flags)
 	in Header Search Path add "/usr/local/include"	
 
