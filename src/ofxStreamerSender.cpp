@@ -15,7 +15,6 @@ ofxStreamerSender::~ofxStreamerSender(){
     close();
 }
 
-
 void ofxStreamerSender::setup(int _width, int _height, string destination_ip, int destination_port ,string _preset, string _tune){
     
     if(streaming){
@@ -83,9 +82,10 @@ void ofxStreamerSender::setup(int _width, int _height, string destination_ip, in
     mCodecContext->height   = height;
     mCodecContext->gop_size = mGopSize;
     mCodecContext->pix_fmt  = AV_PIX_FMT_YUV420P;
-    mCodecContext->max_b_frames  = 0;
+    mCodecContext->max_b_frames  = 4;
     mCodecContext->thread_count  = 4;
     mCodecContext->thread_type   = FF_THREAD_SLICE;
+
 
     if (mFormatContext->oformat->flags & AVFMT_GLOBALHEADER)
     {
@@ -113,6 +113,9 @@ void ofxStreamerSender::setup(int _width, int _height, string destination_ip, in
     
     av_opt_set(mCodecContext->priv_data, "tune", tune.c_str(), 0);
     
+    //av_opt_set(mCodecContext->priv_data, "keyint", "50", 0);
+    //av_opt_set(mCodecContext->priv_data, "keyint", "50", 0);
+    
     avcodec_open2(mCodecContext, mCodec, NULL);
 
     // write the header
@@ -125,6 +128,7 @@ void ofxStreamerSender::setup(int _width, int _height, string destination_ip, in
     
     frame = avcodec_alloc_frame();
     frame->pts = 0;
+    frame->quality = 1;
     
     int num_bytes = avpicture_get_size(PIX_FMT_YUV420P, width, height);
     frameBuf = (uint8_t*)malloc(num_bytes);
@@ -167,7 +171,6 @@ bool ofxStreamerSender::sendFrame(unsigned char *data, int data_length){
         
         encodedFrameSize = p.size;
         
-        
         if(encodedFrameSize == 0){
             ofLog(OF_LOG_WARNING, "No encoded frame to send, make sure to call encodeFrame");
             return false;
@@ -195,7 +198,7 @@ bool ofxStreamerSender::sendFrame(unsigned char *data, int data_length){
         
 
         return true;
-    }
+    } 
     return false;
 }
 

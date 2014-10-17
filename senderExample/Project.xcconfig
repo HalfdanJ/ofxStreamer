@@ -5,5 +5,10 @@ OF_PATH = ../../..
 //THIS HAS ALL THE HEADER AND LIBS FOR OF CORE
 #include "../../../libs/openFrameworksCompiled/project/osx/CoreOF.xcconfig"
 
+STREAMER_HEADERS = "$(OF_PATH)/addons/ofxStreamer/src" "$(OF_PATH)/addons/ofxStreamer/libs" "$(OF_PATH)/addons/ofxStreamer/include"
+
 OTHER_LDFLAGS = $(OF_CORE_LIBS) 
 HEADER_SEARCH_PATHS = $(OF_CORE_HEADERS)
+
+USER_HEADER_SEARCH_PATHS = $(STREAMER_HEADERS)
+

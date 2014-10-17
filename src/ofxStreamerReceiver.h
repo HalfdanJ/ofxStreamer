@@ -49,7 +49,9 @@ public:
     void            close();
     ofTexture &     getTextureReference();
     ofTexture *     getTexture(){return NULL;}
-    unsigned char * getPixels();
+    
+    ofPixels_<unsigned char>& getPixels();
+    ofPixels_<unsigned char>& getPixels() const;
     
     ofPixelsRef     getPixelsRef();
     ofPixelsRef     getPixelsRef() const;

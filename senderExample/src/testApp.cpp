@@ -4,12 +4,13 @@
 void testApp::setup(){
     ofSetWindowTitle("Sender");
     ofSetWindowPosition(0, 0);
+    ofSetFrameRate(30);
 
     ofLogLevel(OF_LOG_WARNING);
     
-    grabber.initGrabber(320, 240);
+    grabber.initGrabber(1920/4, 1080/4);
     
-    sender.setup(grabber.getWidth(), grabber.getHeight(), "127.0.0.1");
+    sender.setup(grabber.getWidth(), grabber.getHeight(), "25.89.237.204");
 }
 
 //--------------------------------------------------------------

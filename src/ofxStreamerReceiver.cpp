@@ -208,12 +208,17 @@ void ofxStreamerReceiver::draw(float x, float y, float w, float h) {
     }
 }
 
-unsigned char * ofxStreamerReceiver::getPixels() {
+ofPixels_<unsigned char>& ofxStreamerReceiver::getPixels() {
     if(allocated){
         return lastFrame->getPixels();
     }
-    return nil;
+    //return nil;
 }
+
+ofPixels_<unsigned char>& ofxStreamerReceiver::getPixels() const {
+    return static_cast<const ofxStreamerReceiver *>(this)->getPixels();
+}
+
 
 ofPixelsRef ofxStreamerReceiver::getPixelsRef() {
     return lastFrame->getPixelsRef();
