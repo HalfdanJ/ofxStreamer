@@ -20,6 +20,6 @@ public:
     void gotMessage(ofMessage msg);
     void exit();
     
-    ofxStreamerReceiver receiver;
+    ofxStreamerReceiver* receiver;
     
 };
