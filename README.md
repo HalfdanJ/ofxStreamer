@@ -3,17 +3,9 @@ This addon is for streaming an image from one computer to another using H.264 pr
 
 
 ## Installation
-Works currently only on Mac OS X. Tested on 10.8.3
+Add the addon to a new project with the project generator, or add it to an existing project using the OFPlugin for XCode. 
 
-### Dependencies
-
-	none
-
-### Adding to another project
-Copy the folder to addons, remove example
-
-	in other linker flags add "$(SRCROOT)/../libs/osx/libx264.a"  (or just drag the file into other linker flags)
-	in Header Search Path add "/usr/local/include"	
+**Note:** Due to a bug in the project generator and [OFPlugin](https://github.com/admsyn/OFPlugin/issues/26), you need to remove some files from your project. Remove the folder `ofxStreamer/libs/libx264/include` in the project navigator. 
 
 
 ### Save the stream from commandline
