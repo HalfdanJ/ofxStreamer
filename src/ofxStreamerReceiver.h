@@ -25,69 +25,68 @@ extern "C"
 #include <libswscale/swscale.h>
 }
 
-class ofxStreamerReceiver : public ofBaseVideoPlayer, ofThread {
+class ofxStreamerReceiver : public ofBaseVideoDraws, ofThread {
     
 public:
     ofxStreamerReceiver();
     bool            connected;
     bool            allocated;
-    bool            bHavePixelsChanged;
     int             width;
     int             height;
     int             port;
     string          host;
     string          url;
+    float           frameRate;
+    int             frameNum;
+    int             bitrate;
+
     
     bool            setup(int port, std::string host="udp://@");
-    void            update();
-    bool            isFrameNew() const;
-    bool            isFrameNew();
-    void            draw(float x, float y);
-    void            draw(float x, float y, float w, float h);
-    void            draw(const ofPoint &p);
-    void            draw(const ofRectangle &r);
     void            close();
-    ofTexture &     getTextureReference();
-    ofTexture *     getTexture(){return NULL;}
-    
-    ofPixels_<unsigned char>& getPixels();
-    ofPixels_<unsigned char>& getPixels() const;
-    
-    ofPixelsRef     getPixelsRef();
-    ofPixelsRef     getPixelsRef() const;
 
-    float           getHeight() const;
-    float           getHeight();
-    float           getWidth() const;
-    float           getWidth();
-    bool            isConnected() const;
-    bool            isConnected();
-    long            frameNum;
-    int             bitrate;
-    float           frameRate;
     
-    bool            loadMovie(string name){return false;}
-    void            play(){}
-    void            pause(){}
-    void            stop(){}
+    void            update();
     
-    bool isPaused() const {return false;}
-    bool isLoaded() const {return connected;}
-    bool isPlaying() const {return false;}
-    
-    bool isPaused() {return false;}
-    bool isLoaded() {return connected;}
-    bool isPlaying() {return false;}
-    
-    bool setPixelFormat(ofPixelFormat pixelFormat){return false;}
-    ofPixelFormat getPixelFormat() const {return OF_PIXELS_RGB;}
-    
+    bool isConnected() const;
     void setConnected(bool d);
     
     ofEvent<void> onConnect;
     ofEvent<void> onDisconnect;
-
     
+    
+    //ofBaseVideoDraws
+    ofPixels& 			getPixels();
+    const ofPixels&		getPixels() const;
+    
+    bool isFrameNew() const;
+
+    bool isInitialized() const {};
+    
+    bool setPixelFormat(ofPixelFormat pixelFormat) {}
+    
+    ofPixelFormat getPixelFormat() const {}
+    
+    
+    void draw(float x, float y) const;
+    void draw(float x,  float y, float w, float h) const;
+    
+    float getHeight() const;
+    float getWidth() const;
+    
+    
+    ofTexture & getTexture();
+    
+    const ofTexture & getTexture() const;
+    
+    void setUseTexture(bool bUseTex) {};
+    
+    bool isUsingTexture() const {};
+    
+    vector<ofTexture> & getTexturePlanes(){};
+    const vector<ofTexture> & getTexturePlanes() const{};
+
+
+
 private:
     struct SwsContext* imgctx;
     
@@ -115,6 +114,8 @@ private:
     
     ofMutex             mutex;
     bool                open;
+    
+    bool                bHavePixelsChanged;
     
 
 };

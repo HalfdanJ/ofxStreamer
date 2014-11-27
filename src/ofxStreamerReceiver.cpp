@@ -158,6 +158,7 @@ void ofxStreamerReceiver::threadedFunction(){
 }
 
 void ofxStreamerReceiver::update() {
+    bHavePixelsChanged = false;
     if(open && mutex.tryLock()){
         if(newFrame){
             if(!allocated){
@@ -187,68 +188,32 @@ void ofxStreamerReceiver::update() {
       //  cout<<"Could not lock"<<endl;
     }
 }
-
+/*
 void ofxStreamerReceiver::draw(const ofPoint &p) {
     draw(p.x, p.y);
-}
+}*/
 
-void ofxStreamerReceiver::draw(float x, float y) {
+void ofxStreamerReceiver::draw(float x, float y) const {
     draw(x, y, getWidth(), getHeight());
 }
-
+/*
 void ofxStreamerReceiver::draw(const ofRectangle &r) {
     draw(r.x, r.y, r.width, r.height);
 }
-
-void ofxStreamerReceiver::draw(float x, float y, float w, float h) {
-    bHavePixelsChanged = false;
+*/
+void ofxStreamerReceiver::draw(float x, float y, float w, float h) const {
     if(allocated){
         lastFrame->draw(x,y,w,h);
-    } else {
-    }
-}
-
-ofPixels_<unsigned char>& ofxStreamerReceiver::getPixels() {
-    if(allocated){
-        return lastFrame->getPixels();
-    }
-    //return nil;
-}
-
-ofPixels_<unsigned char>& ofxStreamerReceiver::getPixels() const {
-    return static_cast<const ofxStreamerReceiver *>(this)->getPixels();
-}
-
-
-ofPixelsRef ofxStreamerReceiver::getPixelsRef() {
-    return lastFrame->getPixelsRef();
-}
-
-ofPixelsRef ofxStreamerReceiver::getPixelsRef() const {
-    return lastFrame->getPixelsRef();
-}
-
-ofTexture & ofxStreamerReceiver::getTextureReference() {
-
-    return lastFrame->getTextureReference();
+    } 
 }
 
 bool ofxStreamerReceiver::isFrameNew() const {
     return (bHavePixelsChanged && allocated);
 }
 
-bool ofxStreamerReceiver::isFrameNew() {
-    return static_cast<const ofxStreamerReceiver *>(this)->isFrameNew();
-}
-
 bool ofxStreamerReceiver::isConnected() const {
     return connected;
 }
-
-bool ofxStreamerReceiver::isConnected() {
-    return static_cast<const ofxStreamerReceiver *>(this)->isConnected();
-}
-
 
 
 void ofxStreamerReceiver::setConnected(bool d){
@@ -290,15 +255,32 @@ float ofxStreamerReceiver::getWidth() const {
     return width;
 }
 
-float ofxStreamerReceiver::getWidth() {
-    return static_cast<const ofxStreamerReceiver *>(this)->getWidth();
-
-}
-
-float ofxStreamerReceiver::getHeight() {
-    return static_cast<const ofxStreamerReceiver *>(this)->getHeight();
-}
-
 float ofxStreamerReceiver::getHeight() const {
     return height;
 }
+
+
+//---------------------------------------------------------------------------
+ofPixels & ofxStreamerReceiver::getPixels(){
+    return lastFrame->getPixels();
+}
+
+//---------------------------------------------------------------------------
+const ofPixels & ofxStreamerReceiver::getPixels() const{
+    return lastFrame->getPixels();
+}
+
+
+ofTexture & ofxStreamerReceiver::getTexture(){
+    if(allocated){
+        return lastFrame->getTexture();
+    }
+}
+
+const ofTexture & ofxStreamerReceiver::getTexture() const {
+    if(allocated){
+        return lastFrame->getTexture();
+    }
+}
+
+

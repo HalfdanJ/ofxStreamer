@@ -8,9 +8,9 @@ void testApp::setup(){
 
     ofLogLevel(OF_LOG_WARNING);
     
-    grabber.initGrabber(1920/4, 1080/4);
+    grabber.initGrabber(640, 480);
     
-    sender.setup(grabber.getWidth(), grabber.getHeight(), "25.89.237.204");
+    sender.setup(grabber.getWidth(), grabber.getHeight(), "127.0.0.1");
 }
 
 //--------------------------------------------------------------
